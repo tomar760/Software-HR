@@ -4,7 +4,7 @@
  ***********************************************************************************/
 
 const CONFIG = {
-  WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbyNMxedcbi_zHA8ma8sc3TncVGuB3lcKie44y36eVAoA2jVW7eZRhfrIgKFJjY4IV9S/exec', // ← Paste Apps Script Web App URL
+  WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbyyr1q3hGQZzOJoQp11zxoxdH1PHOACxIhatTAH9WWpH84GISYLqhyu2_0lruv_5gh5/exec', // ← Paste Apps Script Web App URL
   COMPANY: 'House of Panchhi',
   VERSION: 'v3.0.0'
 };
