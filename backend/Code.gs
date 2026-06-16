@@ -16,7 +16,7 @@ const CONFIG = {
   DRIVE_FOLDER_ID: '1haM_kHc-gUpjOlZv8JXFENRMt5MdhkPv', // ← CHANGE THIS
   DEFAULT_ADMIN: {
     name: 'Aditya Tomar',
-    email: 'aditya@houseofpanchhi.com',
+    email: 'tomaraditya545@gmail.com',
     password: 'admin123'  // ← CHANGE AFTER FIRST LOGIN
   },
   COMPANY: 'House of Panchhi',
