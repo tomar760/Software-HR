@@ -12,8 +12,8 @@
  ***********************************************************************************/
 
 const CONFIG = {
-  SHEET_ID: 'YOUR_GOOGLE_SHEET_ID_HERE',       // ← CHANGE THIS
-  DRIVE_FOLDER_ID: 'YOUR_DRIVE_FOLDER_ID_HERE', // ← CHANGE THIS
+  SHEET_ID: '10qQe9hxaDB8rj8YThTXyMnSDUv_j6nbiLrGg0_LYP-4',       // ← CHANGE THIS
+  DRIVE_FOLDER_ID: '1haM_kHc-gUpjOlZv8JXFENRMt5MdhkPv', // ← CHANGE THIS
   DEFAULT_ADMIN: {
     name: 'Aditya Tomar',
     email: 'aditya@houseofpanchhi.com',
