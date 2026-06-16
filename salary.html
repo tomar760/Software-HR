@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.salary-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.salary-box { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 16px; text-align: center; }
+.salary-box .sb-num { font-size: 20px; font-weight: 800; color: var(--gray-900); }
+.salary-box .sb-label { font-size: 11px; color: var(--gray-500); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'"><div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div></div>
+  <div class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">Main</div><div class="nav-link" data-module="dashboard" onclick="window.location='index.html'"><i class="fas fa-th-large"></i> Dashboard</div></div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link" data-module="leave" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link active" data-module="salary"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Operations</div><div class="nav-link" data-module="store" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store</div></div>
+    <div class="nav-section"><div class="nav-section-title">Analytics</div><div class="nav-link" data-module="analytics" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div><div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div></div>
+    <div class="nav-section"><div class="nav-section-title">System</div><div class="nav-link" data-module="users" onclick="window.location='users.html'"><i class="fas fa-user-shield"></i> User Management</div><div class="nav-link" data-module="settings" onclick="window.location='index.html#settings'"><i class="fas fa-sliders"></i> Settings</div><div class="nav-link" data-module="profile" onclick="window.location='index.html#profile'"><i class="fas fa-user-circle"></i> My Profile</div><div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div></div>
+  </div>
+  <div class="sidebar-footer"><div class="user-avatar" id="sidebarAvatar">U</div><div class="user-info"><h4 id="sidebarName">User</h4><span><span class="online-dot"></span> <span class="badge-role">Role</span></span></div></div>
+</nav>
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left"><button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="page-title"><h1>Salary / Payroll</h1><p>Calculate & process monthly salaries</p></div></div>
+    <div class="header-right"><div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div><div class="header-avatar" id="headerAvatar" onclick="window.location='index.html#profile'">U</div></div>
+  </header>
+  <div class="page-content">
+    <div class="form-card" style="margin-bottom:20px">
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+        <div class="form-group" style="margin:0"><label>Month</label><input type="month" id="salMonth" style="padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:13px"></div>
+        <div class="form-group" style="margin:0"><label>Working Days</label><input type="number" id="workingDays" value="26" style="padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:13px;width:100px"></div>
+        <button class="btn btn-primary" onclick="calculateSalary()"><i class="fas fa-calculator"></i> Calculate All</button>
+        <button class="btn btn-success btn-sm" onclick="downloadSalarySheet()"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="btn btn-outline btn-sm" onclick="loadSalaryData()" title="Refresh"><i class="fas fa-rotate"></i></button>
+      </div>
+    </div>
+
+    <div class="salary-summary" id="salSummary" style="display:none">
+      <div class="salary-box"><div class="sb-num" id="sumGross">₹0</div><div class="sb-label">Total Gross</div></div>
+      <div class="salary-box"><div class="sb-num" id="sumDed">₹0</div><div class="sb-label">Total Deductions</div></div>
+      <div class="salary-box"><div class="sb-num" id="sumNet">₹0</div><div class="sb-label">Total Net</div></div>
+      <div class="salary-box"><div class="sb-num" id="sumEmp">0</div><div class="sb-label">Employees</div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header"><h3><i class="fas fa-money-bill-wave"></i> Salary Sheet</h3></div>
+      <div class="table-wrapper"><table><thead><tr><th>E-Code</th><th>Name</th><th>Dept</th><th>Gross</th><th>Present</th><th>Payable</th><th>Bonus</th><th>Advance</th><th>Loan</th><th>LWP</th><th>Net</th><th class="sticky-right">Action</th></tr></thead><tbody id="salaryBody"><tr><td colspan="12" class="table-empty">Select month and calculate</td></tr></tbody></table></div>
+    </div>
+
+    <div class="grid-1-2 mt-24">
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-hand-holding-dollar"></i> Advance</div>
+        <div class="form-group mb-16"><label>Employee</label><select id="adv_emp"><option value="">Select...</option></select></div>
+        <div class="form-group mb-16"><label>Amount</label><input type="number" id="adv_amount" placeholder="Max 50% of salary"></div>
+        <button class="btn btn-primary btn-full" onclick="giveAdvance()"><i class="fas fa-save"></i> Save Advance</button>
+      </div>
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-file-invoice-dollar"></i> Loan</div>
+        <div class="form-group mb-16"><label>Employee</label><select id="loan_emp"><option value="">Select...</option></select></div>
+        <div class="form-group mb-16"><label>Amount</label><input type="number" id="loan_amount"></div>
+        <div class="form-group mb-16"><label>EMI</label><input type="number" id="loan_emi"></div>
+        <button class="btn btn-primary btn-full" onclick="giveLoan()"><i class="fas fa-save"></i> Save Loan</button>
+      </div>
+    </div>
+    <div class="app-footer"><div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div></div>
+  </div>
+</div>
+</div>
+<script src="assets/js/app.js"></script>
+<script>
+let employees = [], attendance = [], advances = [], salaryRecords = [], calculated = [];
+window.addEventListener('load', () => { document.getElementById('salMonth').value = new Date().toISOString().slice(0, 7); loadSalaryData(); });
+async function loadSalaryData() { employees = await GSheet.read('Employees'); attendance = await GSheet.read('Attendance'); advances = await GSheet.read('Advance'); salaryRecords = await GSheet.read('Salary'); populateEmp(); }
+function populateEmp() { ['adv_emp', 'loan_emp'].forEach(id => { const sel = document.getElementById(id); sel.innerHTML = '<option value="">Select...</option>'; employees.filter(e => e.Status === 'ACTIVE').forEach(e => sel.innerHTML += `<option value="${e.ID}">${e['E-Code']} — ${e['Full Name']}</option>`); }); }
+function calculateSalary() {
+  const month = document.getElementById('salMonth').value; const workingDays = Number(document.getElementById('workingDays').value) || 26;
+  if (!month) { showToast('error', 'Select Month', 'Select a month first'); return; }
+  calculated = employees.filter(e => e.Status === 'ACTIVE').map(e => {
+    const recs = attendance.filter(r => r['E-Code'] === e['E-Code'] && r.Date && r.Date.startsWith(month));
+    const present = recs.filter(r => r.Status === 'P' || r.Status === 'L').length;
+    const absent = recs.filter(r => r.Status === 'A').length;
+    const gross = Number(e['New CTC'] || e['Fixed CTC'] || 0);
+    const perDay = gross / workingDays;
+    const payableDays = present;
+    let bonusDays = 0;
+    if (e['Bonus Tag'] === 'YES' && present === workingDays) bonusDays = 1;
+    const lwpDed = absent * perDay;
+    const empAdv = advances.filter(a => a['E-Code'] === e['E-Code'] && a.Type === 'Advance' && a.Status === 'ACTIVE');
+    const advanceDed = empAdv.reduce((s, a) => s + Number(a.Amount), 0);
+    const empLoan = advances.filter(a => a['E-Code'] === e['E-Code'] && a.Type === 'Loan' && a.Status === 'ACTIVE');
+    const loanDed = empLoan.reduce((s, a) => s + Number(a.EMI), 0);
+    const grossEarned = (payableDays + bonusDays) * perDay;
+    const totalDed = advanceDed + loanDed + lwpDed;
+    const net = Math.max(0, grossEarned - totalDed);
+    return { ID: genId('SAL'), Month: month, 'E-Code': e['E-Code'], Name: e['Full Name'], Department: e.Department, 'Bank A/C': e['Account No'], Gross: gross, 'Working Days': workingDays, 'Present Days': present, 'Payable Days': payableDays, 'Bonus Days': bonusDays, 'Gross Earned': grossEarned, 'Advance Ded': advanceDed, 'Loan EMI': loanDed, 'LWP Ded': lwpDed, 'Total Ded': totalDed, 'Net Salary': net, Senior: e['Senior Tag'] === 'YES', 'Bonus Tag': e['Bonus Tag'] === 'YES' };
+  });
+  renderSalary();
+}
+function renderSalary() {
+  const body = document.getElementById('salaryBody');
+  if (!calculated.length) { body.innerHTML = '<tr><td colspan="12" class="table-empty">No data</td></tr>'; return; }
+  document.getElementById('salSummary').style.display = 'grid';
+  document.getElementById('sumGross').textContent = formatINR(calculated.reduce((s, r) => s + r['Gross Earned'], 0));
+  document.getElementById('sumDed').textContent = formatINR(calculated.reduce((s, r) => s + r['Total Ded'], 0));
+  document.getElementById('sumNet').textContent = formatINR(calculated.reduce((s, r) => s + r['Net Salary'], 0));
+  document.getElementById('sumEmp').textContent = calculated.length;
+  body.innerHTML = calculated.map(r => `<tr><td class="font-mono" style="color:var(--primary);font-weight:700">${r['E-Code']}</td><td style="font-weight:700">${r.Name}</td><td style="font-size:12.5px">${r.Department}</td><td style="font-weight:600">${formatINR(r.Gross)}</td><td>${r['Present Days']}</td><td>${r['Payable Days']}${r['Bonus Days'] ? '+' + r['Bonus Days'] : ''}</td><td>${r['Bonus Days'] ? '<span style="color:var(--success);font-weight:700">+1</span>' : '—'}</td><td>${r['Advance Ded'] ? formatINR(r['Advance Ded']) : '—'}</td><td>${r['Loan EMI'] ? formatINR(r['Loan EMI']) : '—'}</td><td>${r['LWP Ded'] ? formatINR(r['LWP Ded']) : '—'}</td><td style="font-weight:800;color:var(--success)">${formatINR(r['Net Salary'])}</td><td class="sticky-right"><button class="btn btn-outline btn-sm" onclick="printPayslip('${r.ID}')"><i class="fas fa-print"></i></button></td></tr>`).join('');
+}
+async function saveSalary() { if (!calculated.length) return; await GSheet.sendBatch('Payroll', calculated); await logActivity('Calculated salary', 'salary', `${calculated.length} employees`); showToast('success', 'Saved', 'Salary sheet saved to Google Sheets'); }
+function downloadSalarySheet() { if (!calculated.length) return; downloadCSV('Salary_Sheet.csv', calculated, ['Month', 'E-Code', 'Name', 'Department', 'Gross', 'Present Days', 'Payable Days', 'Bonus Days', 'Gross Earned', 'Advance Ded', 'Loan EMI', 'LWP Ded', 'Total Ded', 'Net Salary']); }
+function printPayslip(id) { const r = calculated.find(x => x.ID === id); if (!r) return; const w = window.open('', '_blank'); w.document.write(`<!DOCTYPE html><html><head><style>body{font-family:Arial;padding:30px;font-size:13px}.box{border:2px solid #6c47ff;padding:20px;border-radius:12px;max-width:500px;margin:auto}.header{text-align:center;border-bottom:2px solid #6c47ff;padding-bottom:16px;margin-bottom:20px}.header h2{margin:0;color:#6c47ff}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #ddd}.amt{font-weight:800;color:#6c47ff}</style></head><body><div class="box"><div class="header"><h2>House of Panchhi</h2><p>Payslip — ${r.Month}</p></div><div class="row"><span>Employee</span><span>${r.Name}</span></div><div class="row"><span>E-Code</span><span>${r['E-Code']}</span></div><div class="row"><span>Department</span><span>${r.Department}</span></div><div class="row"><span>Gross Salary</span><span>${formatINR(r.Gross)}</span></div><div class="row"><span>Present Days</span><span>${r['Present Days']}/${r['Working Days']}</span></div><div class="row"><span>Gross Earned</span><span class="amt">${formatINR(r['Gross Earned'])}</span></div><div class="row"><span>Total Deductions</span><span>${formatINR(r['Total Ded'])}</span></div><div class="row" style="font-size:16px;border-top:2px solid #6c47ff;margin-top:12px;padding-top:12px"><span>Net Salary</span><span class="amt">${formatINR(r['Net Salary'])}</span></div></div><script>window.print();<\/script></body></html>`); w.document.close(); }
+async function giveAdvance() { const empId = document.getElementById('adv_emp').value; const amount = Number(document.getElementById('adv_amount').value); if (!empId || !amount) return; const emp = employees.find(e => e.ID === empId); const gross = Number(emp['New CTC'] || emp['Fixed CTC'] || 0); if (amount > gross * 0.5) { showToast('error', 'Limit', 'Advance max 50% of salary'); return; } const adv = { ID: genId('ADV'), 'Given On': todayStr(), 'E-Code': emp['E-Code'], Name: emp['Full Name'], Department: emp.Department, Type: 'Advance', Amount: amount, EMI: 0, Balance: 0, 'Deduct Month': new Date().toISOString().slice(0, 7), 'EMI Start': '', Remark: '', Status: 'ACTIVE' }; await GSheet.send('Advance', adv); await logActivity('Gave advance', 'salary', `${emp['Full Name']} — ${formatINR(amount)}`); await loadSalaryData(); showToast('success', 'Advance Saved', `${formatINR(amount)} for ${emp['Full Name']}`); document.getElementById('adv_emp').value = ''; document.getElementById('adv_amount').value = ''; }
+async function giveLoan() { const empId = document.getElementById('loan_emp').value; const amount = Number(document.getElementById('loan_amount').value); const emi = Number(document.getElementById('loan_emi').value); if (!empId || !amount || !emi) return; const emp = employees.find(e => e.ID === empId); const nextMonth = new Date(); nextMonth.setMonth(nextMonth.getMonth() + 1); const loan = { ID: genId('LOAN'), 'Given On': todayStr(), 'E-Code': emp['E-Code'], Name: emp['Full Name'], Department: emp.Department, Type: 'Loan', Amount: amount, EMI: emi, Balance: amount, 'Deduct Month': '', 'EMI Start': nextMonth.toISOString().slice(0, 7), Remark: '', Status: 'ACTIVE' }; await GSheet.send('Advance', loan); await logActivity('Gave loan', 'salary', `${emp['Full Name']} — ${formatINR(amount)}`); await loadSalaryData(); showToast('success', 'Loan Saved', `${formatINR(amount)} for ${emp['Full Name']}`); document.getElementById('loan_emp').value = ''; document.getElementById('loan_amount').value = ''; document.getElementById('loan_emi').value = ''; }
+</script>
+</body>
+</html>

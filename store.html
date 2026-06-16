@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'"><div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div></div>
+  <div class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">Main</div><div class="nav-link" data-module="dashboard" onclick="window.location='index.html'"><i class="fas fa-th-large"></i> Dashboard</div></div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link" data-module="leave" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link" data-module="salary" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Operations</div><div class="nav-link active" data-module="store"><i class="fas fa-boxes-stacked"></i> Store</div></div>
+    <div class="nav-section"><div class="nav-section-title">Analytics</div><div class="nav-link" data-module="analytics" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div><div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div></div>
+    <div class="nav-section"><div class="nav-section-title">System</div><div class="nav-link" data-module="users" onclick="window.location='users.html'"><i class="fas fa-user-shield"></i> User Management</div><div class="nav-link" data-module="settings" onclick="window.location='index.html#settings'"><i class="fas fa-sliders"></i> Settings</div><div class="nav-link" data-module="profile" onclick="window.location='index.html#profile'"><i class="fas fa-user-circle"></i> My Profile</div><div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div></div>
+  </div>
+  <div class="sidebar-footer"><div class="user-avatar" id="sidebarAvatar">U</div><div class="user-info"><h4 id="sidebarName">User</h4><span><span class="online-dot"></span> <span class="badge-role">Role</span></span></div></div>
+</nav>
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left"><button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="page-title"><h1>Store & Inventory</h1><p>Assets, stock & PO/PR tracking</p></div></div>
+    <div class="header-right"><div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div><div class="header-avatar" id="headerAvatar" onclick="window.location='index.html#profile'">U</div></div>
+  </header>
+  <div class="page-content">
+    <div class="stat-cards">
+      <div class="stat-card purple"><div class="stat-icon purple"><i class="fas fa-boxes-stacked"></i></div><div class="stat-number" id="st-total">0</div><div class="stat-label">Total Entries</div></div>
+      <div class="stat-card red"><div class="stat-icon red"><i class="fas fa-circle-exclamation"></i></div><div class="stat-number" id="st-pending">0</div><div class="stat-label">Pending PO/PR</div></div>
+      <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div><div class="stat-number" id="st-value">₹0</div><div class="stat-label">Total Value</div></div>
+      <div class="stat-card blue"><div class="stat-icon blue"><i class="fas fa-warehouse"></i></div><div class="stat-number" id="st-items">0</div><div class="stat-label">Unique Items</div></div>
+    </div>
+
+    <div class="grid-1-2">
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-plus-circle"></i> New Store Entry</div>
+        <div class="form-grid form-grid-2" style="gap:12px">
+          <div class="form-group"><label>Date</label><input type="date" id="st_date"></div>
+          <div class="form-group"><label>Item Name *</label><input id="st_item" placeholder="e.g. Machine part"></div>
+          <div class="form-group"><label>Category</label><select id="st_category"><option value="">Select</option><option>Plant</option><option>HO</option><option>Global</option></select></div>
+          <div class="form-group"><label>Condition</label><select id="st_condition"><option value="">Select</option><option>New</option><option>Old</option></select></div>
+          <div class="form-group"><label>Qty</label><input type="number" id="st_qty" value="1" onchange="calcTotal()"></div>
+          <div class="form-group"><label>Unit</label><input id="st_unit" placeholder="pcs, kg, meter"></div>
+          <div class="form-group"><label>Rate (₹)</label><input type="number" id="st_rate" onchange="calcTotal()"></div>
+          <div class="form-group"><label>Total (₹)</label><input type="number" id="st_total" readonly></div>
+          <div class="form-group"><label>Vendor</label><input id="st_vendor"></div>
+          <div class="form-group"><label>PO No</label><input id="st_po" placeholder="Purchase Order"></div>
+          <div class="form-group"><label>PR No</label><input id="st_pr" placeholder="Purchase Request"></div>
+          <div class="form-group"><label>Bill No</label><input id="st_bill"></div>
+          <div class="form-group" style="grid-column:span 2"><label>Attachment (Bill/Photo)</label><input type="file" id="st_attachment" accept="image/*,.pdf"></div>
+          <div class="form-group" style="grid-column:span 2"><label>Remark</label><textarea id="st_remark" rows="2"></textarea></div>
+        </div>
+        <button class="btn btn-primary btn-full mt-16" onclick="saveStore()"><i class="fas fa-save"></i> Save Entry</button>
+      </div>
+      <div class="table-card" style="margin-bottom:0">
+        <div class="table-header"><h3><i class="fas fa-triangle-exclamation"></i> Pending PO/PR</h3></div>
+        <div class="table-wrapper"><table><thead><tr><th>Date</th><th>Item</th><th>Vendor</th><th>Missing</th><th class="sticky-right">Action</th></tr></thead><tbody id="pendingBody"><tr><td colspan="5" class="table-empty">No pending</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="table-card mt-24">
+      <div class="table-header"><h3><i class="fas fa-list-check"></i> All Entries</h3><div class="search-box"><i class="fas fa-search"></i><input type="text" id="stSearch" placeholder="Search..." oninput="renderTable()"></div></div>
+      <div class="table-wrapper"><table><thead><tr><th>Date</th><th>Item</th><th>Category</th><th>Condition</th><th>Qty</th><th>Rate</th><th>Total</th><th>Vendor</th><th>PO/PR</th><th>Bill</th><th>Attachment</th><th class="sticky-right">Action</th></tr></thead><tbody id="storeBody"><tr><td colspan="12" class="table-empty">No entries</td></tr></tbody></table></div>
+    </div>
+    <div class="app-footer"><div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div></div>
+  </div>
+</div>
+</div>
+<script src="assets/js/app.js"></script>
+<script>
+let storeEntries = [];
+window.addEventListener('load', () => { document.getElementById('st_date').value = todayStr(); loadStore(); });
+async function loadStore() { storeEntries = await GSheet.read('Store'); renderTable(); renderPending(); updateStats(); }
+function calcTotal() { const qty = Number(document.getElementById('st_qty').value) || 1; const rate = Number(document.getElementById('st_rate').value) || 0; document.getElementById('st_total').value = qty * rate; }
+async function saveStore() { const date = document.getElementById('st_date').value; const item = document.getElementById('st_item').value.trim(); const qty = Number(document.getElementById('st_qty').value) || 1; const rate = Number(document.getElementById('st_rate').value) || 0; const total = qty * rate; if (!item) { showToast('error', 'Required', 'Item name required'); return; } let attachmentUrl = '', attachmentName = ''; const file = document.getElementById('st_attachment').files[0]; if (file) { const reader = new FileReader(); reader.onload = async e => { const base64 = e.target.result.split(',')[1]; const res = await uploadBase64ToDrive(base64, file.name, file.type, 'StoreAttachments'); attachmentUrl = res.success ? e.target.result : ''; attachmentName = file.name; await submitStoreEntry(date, item, qty, rate, total, attachmentUrl, attachmentName); }; reader.readAsDataURL(file); return; } await submitStoreEntry(date, item, qty, rate, total, attachmentUrl, attachmentName); }
+async function submitStoreEntry(date, item, qty, rate, total, attachmentUrl, attachmentName) { const entry = { ID: genId('ST'), Date: date, Item: item, Category: document.getElementById('st_category').value, Condition: document.getElementById('st_condition').value, Qty: qty, Unit: document.getElementById('st_unit').value, Rate: rate, Total: total, Vendor: document.getElementById('st_vendor').value.trim(), 'PO No': document.getElementById('st_po').value.trim(), 'PR No': document.getElementById('st_pr').value.trim(), 'Bill No': document.getElementById('st_bill').value.trim(), 'Attachment URL': attachmentUrl, 'Attachment Name': attachmentName, 'PO Status': (document.getElementById('st_po').value && document.getElementById('st_pr').value) ? 'COMPLETE' : 'PENDING', Remark: document.getElementById('st_remark').value.trim() }; await GSheet.send('Store', entry); await logActivity('Added store entry', 'store', item); await loadStore(); resetStoreForm(); showToast('success', 'Saved', `${item} saved`); }
+function resetStoreForm() { ['st_item','st_vendor','st_po','st_pr','st_bill','st_remark','st_attachment'].forEach(id => document.getElementById(id).value = ''); document.getElementById('st_category').value = ''; document.getElementById('st_condition').value = ''; document.getElementById('st_qty').value = 1; document.getElementById('st_rate').value = ''; document.getElementById('st_total').value = ''; document.getElementById('st_unit').value = ''; }
+function renderTable() { const q = document.getElementById('stSearch')?.value?.toLowerCase() || ''; let data = storeEntries.filter(e => !q || (e.Item || '').toLowerCase().includes(q) || (e.Vendor || '').toLowerCase().includes(q)); const body = document.getElementById('storeBody'); if (!data.length) { body.innerHTML = '<tr><td colspan="12" class="table-empty">No entries</td></tr>'; return; } body.innerHTML = data.map(e => `<tr><td style="font-size:12px">${formatDate(e.Date)}</td><td style="font-weight:700">${e.Item}</td><td style="font-size:12px">${e.Category}</td><td><span class="badge badge-${e.Condition === 'New' ? 'green' : 'amber'}">${e.Condition}</span></td><td>${e.Qty} ${e.Unit}</td><td>${formatINR(e.Rate)}</td><td style="font-weight:700">${formatINR(e.Total)}</td><td style="font-size:12px">${e.Vendor || '—'}</td><td>${e['PO No'] && e['PR No'] ? '<span style="color:var(--success);font-weight:700">Complete</span>' : '<span style="color:var(--danger);font-weight:700">Pending</span>'}</td><td class="font-mono" style="font-size:12px">${e['Bill No'] || '—'}</td><td>${e['Attachment URL'] ? `<a href="${e['Attachment URL']}" target="_blank" style="color:var(--primary)"><i class="fas fa-paperclip"></i></a>` : '—'}</td><td class="sticky-right"><button class="btn btn-outline btn-icon btn-sm" onclick="editStore('${e.ID}')"><i class="fas fa-pen"></i></button></td></tr>`).join(''); }
+function renderPending() { const pending = storeEntries.filter(e => !e['PO No'] || !e['PR No']); const body = document.getElementById('pendingBody'); if (!pending.length) { body.innerHTML = '<tr><td colspan="5" class="table-empty">No pending</td></tr>'; return; } body.innerHTML = pending.map(e => `<tr><td style="font-size:12px">${formatDate(e.Date)}</td><td style="font-weight:700">${e.Item}</td><td style="font-size:12px">${e.Vendor || '—'}</td><td style="font-size:12px">${!e['PO No'] ? 'PO ' : ''}${!e['PR No'] ? 'PR' : ''}</td><td class="sticky-right"><button class="btn btn-primary btn-sm" onclick="fillPO('${e.ID}')"><i class="fas fa-edit"></i></button></td></tr>`).join(''); }
+function updateStats() { document.getElementById('st-total').textContent = storeEntries.length; document.getElementById('st-pending').textContent = storeEntries.filter(e => !e['PO No'] || !e['PR No']).length; document.getElementById('st-value').textContent = formatINR(storeEntries.reduce((s, e) => s + Number(e.Total), 0)); document.getElementById('st-items').textContent = new Set(storeEntries.map(e => e.Item).filter(Boolean)).size; }
+function fillPO(id) { const e = storeEntries.find(x => x.ID === id); if (!e) return; document.getElementById('st_item').value = e.Item; document.getElementById('st_category').value = e.Category; document.getElementById('st_condition').value = e.Condition; document.getElementById('st_qty').value = e.Qty; document.getElementById('st_unit').value = e.Unit; document.getElementById('st_rate').value = e.Rate; document.getElementById('st_total').value = e.Total; document.getElementById('st_vendor').value = e.Vendor; document.getElementById('st_bill').value = e['Bill No']; document.getElementById('st_remark').value = e.Remark; window.scrollTo(0, 0); showToast('info', 'Edit Entry', 'Fill PO/PR and save again'); }
+function editStore(id) { fillPO(id); }
+</script>
+</body>
+</html>

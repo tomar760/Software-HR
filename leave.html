@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.leave-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; text-align: center; transition: all 0.25s; }
+.leave-card:hover { box-shadow: var(--shadow-md); }
+.leave-card .lv-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin: 0 auto 12px; }
+.leave-card .lv-num { font-size: 28px; font-weight: 800; color: var(--gray-900); }
+.leave-card .lv-label { font-size: 12px; color: var(--gray-500); font-weight: 600; }
+.leave-card .lv-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'"><div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div></div>
+  <div class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">Main</div><div class="nav-link" data-module="dashboard" onclick="window.location='index.html'"><i class="fas fa-th-large"></i> Dashboard</div></div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link active" data-module="leave"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link" data-module="salary" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Operations</div><div class="nav-link" data-module="store" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store</div></div>
+    <div class="nav-section"><div class="nav-section-title">Analytics</div><div class="nav-link" data-module="analytics" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div><div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div></div>
+    <div class="nav-section"><div class="nav-section-title">System</div><div class="nav-link" data-module="users" onclick="window.location='users.html'"><i class="fas fa-user-shield"></i> User Management</div><div class="nav-link" data-module="settings" onclick="window.location='index.html#settings'"><i class="fas fa-sliders"></i> Settings</div><div class="nav-link" data-module="profile" onclick="window.location='index.html#profile'"><i class="fas fa-user-circle"></i> My Profile</div><div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div></div>
+  </div>
+  <div class="sidebar-footer"><div class="user-avatar" id="sidebarAvatar">U</div><div class="user-info"><h4 id="sidebarName">User</h4><span><span class="online-dot"></span> <span class="badge-role">Role</span></span></div></div>
+</nav>
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left"><button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="page-title"><h1>Leave Management</h1><p>PL / SL / LWP tracking & approvals</p></div></div>
+    <div class="header-right"><div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div><div class="header-avatar" id="headerAvatar" onclick="window.location='index.html#profile'">U</div></div>
+  </header>
+  <div class="page-content">
+    <div class="stat-cards" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+      <div class="leave-card"><div class="lv-icon" style="background:var(--primary-light);color:var(--primary)"><i class="fas fa-umbrella-beach"></i></div><div class="lv-num" id="walletPL">12</div><div class="lv-label">PL Balance</div><div class="lv-sub">Yearly</div></div>
+      <div class="leave-card"><div class="lv-icon" style="background:var(--info-light);color:var(--info)"><i class="fas fa-notes-medical"></i></div><div class="lv-num" id="walletSL">3</div><div class="lv-label">SL Balance</div><div class="lv-sub">Yearly</div></div>
+      <div class="leave-card"><div class="lv-icon" style="background:var(--danger-light);color:var(--danger)"><i class="fas fa-ban"></i></div><div class="lv-num" id="walletLWP">0</div><div class="lv-label">LWP Taken</div><div class="lv-sub">This year</div></div>
+      <div class="leave-card"><div class="lv-icon" style="background:var(--warning-light);color:var(--warning)"><i class="fas fa-clock"></i></div><div class="lv-num" id="pendingLeave">0</div><div class="lv-label">Pending</div><div class="lv-sub">For approval</div></div>
+    </div>
+
+    <div class="grid-1-2">
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-plus-circle"></i> Apply Leave</div>
+        <div class="form-group mb-16"><label>Employee</label><select id="lv_emp"><option value="">Select...</option></select></div>
+        <div class="form-grid form-grid-2" style="gap:12px;margin-bottom:14px">
+          <div class="form-group"><label>From *</label><input type="date" id="lv_from" onchange="calcDays()"></div>
+          <div class="form-group"><label>To *</label><input type="date" id="lv_to" onchange="calcDays()"></div>
+        </div>
+        <div class="form-group mb-16"><label>Days</label><input type="number" id="lv_days" readonly></div>
+        <div class="form-group mb-16"><label>Type *</label><select id="lv_type" onchange="toggleMed()"><option value="">Select</option><option>PL</option><option>SL</option><option>LWP</option></select></div>
+        <div class="form-group mb-16" id="lv_medWrap" style="display:none"><label>Medical Certificate</label><input type="file" id="lv_medCert" accept="image/*,.pdf"></div>
+        <div class="form-group mb-16"><label>Reason</label><textarea id="lv_reason" rows="2"></textarea></div>
+        <button class="btn btn-primary btn-full" onclick="applyLeave()"><i class="fas fa-paper-plane"></i> Apply Leave</button>
+      </div>
+      <div class="table-card" style="margin-bottom:0">
+        <div class="table-header"><h3><i class="fas fa-clock-rotate-left"></i> Pending Approvals</h3></div>
+        <div class="table-wrapper"><table><thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th class="sticky-right">Action</th></tr></thead><tbody id="pendingBody"><tr><td colspan="7" class="table-empty">No pending</td></tr></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="table-card mt-24">
+      <div class="table-header"><h3><i class="fas fa-list-check"></i> Leave History</h3><div class="search-box"><i class="fas fa-search"></i><input type="text" id="lvSearch" placeholder="Search..." oninput="renderHistory()"></div></div>
+      <div class="table-wrapper"><table><thead><tr><th>Applied</th><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Status</th><th>Approved By</th></tr></thead><tbody id="historyBody"><tr><td colspan="9" class="table-empty">No history</td></tr></tbody></table></div>
+    </div>
+    <div class="app-footer"><div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div></div>
+  </div>
+</div>
+</div>
+<script src="assets/js/app.js"></script>
+<script>
+let employees = [], leaveRecords = [];
+window.addEventListener('load', () => { loadData(); });
+async function loadData() { employees = await GSheet.read('Employees'); leaveRecords = await GSheet.read('Leave'); populateEmp(); renderHistory(); renderPending(); updateWallet(); }
+function populateEmp() { const sel = document.getElementById('lv_emp'); sel.innerHTML = '<option value="">Select...</option>'; employees.filter(e => e.Status === 'ACTIVE').forEach(e => sel.innerHTML += `<option value="${e.ID}">${e['E-Code']} — ${e['Full Name']}</option>`); }
+function calcDays() { const f = document.getElementById('lv_from').value; const t = document.getElementById('lv_to').value; if (!f || !t) return; const d1 = new Date(f); const d2 = new Date(t); const days = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1); document.getElementById('lv_days').value = days; }
+function toggleMed() { document.getElementById('lv_medWrap').style.display = document.getElementById('lv_type').value === 'SL' ? 'block' : 'none'; }
+async function applyLeave() { const empId = document.getElementById('lv_emp').value; const from = document.getElementById('lv_from').value; const to = document.getElementById('lv_to').value; const type = document.getElementById('lv_type').value; const days = Number(document.getElementById('lv_days').value) || 1; const reason = document.getElementById('lv_reason').value.trim(); if (!empId || !from || !to || !type) { showToast('error', 'Required', 'Fill all required fields'); return; } const emp = employees.find(e => e.ID === empId); if (!emp) return; let medCert = '', medVerified = false; if (type === 'SL') { const file = document.getElementById('lv_medCert').files[0]; if (file) { const reader = new FileReader(); reader.onload = async e => { const base64 = e.target.result.split(',')[1]; const res = await uploadBase64ToDrive(base64, file.name, file.type, 'MedicalCertificates'); medCert = file.name; await saveLeaveRecord(emp, from, to, type, days, reason, medCert); }; reader.readAsDataURL(file); return; } else { showToast('error', 'Required', 'Medical certificate required for SL'); return; } } await saveLeaveRecord(emp, from, to, type, days, reason, medCert); }
+async function saveLeaveRecord(emp, from, to, type, days, reason, medCert) { const lv = { ID: genId('LV'), 'Applied On': todayStr(), 'E-Code': emp['E-Code'], Name: emp['Full Name'], Department: emp.Department, Type: type, From: from, To: to, Days: days, Reason: reason, 'Med Cert': medCert, Verified: medCert ? 'YES' : 'NO', Status: 'PENDING', 'Approved On': '', 'Approved By': '' }; await GSheet.send('Leave', lv); await logActivity('Applied leave', 'leave', `${emp['Full Name']} — ${type} ${days} days`); await loadData(); showToast('success', 'Applied', `${type} leave applied for ${emp['Full Name']}`); document.getElementById('lv_emp').value = ''; document.getElementById('lv_from').value = ''; document.getElementById('lv_to').value = ''; document.getElementById('lv_days').value = ''; document.getElementById('lv_type').value = ''; document.getElementById('lv_reason').value = ''; document.getElementById('lv_medCert').value = ''; document.getElementById('lv_medWrap').style.display = 'none'; }
+async function approveLeave(id, status) { const lv = leaveRecords.find(l => l.ID === id); if (!lv) return; lv.Status = status; lv['Approved On'] = todayStr(); lv['Approved By'] = Auth.get()?.name || 'Admin'; await GSheet.send('Leave', lv); await logActivity(`${status} leave`, 'leave', `${lv.Name} — ${lv.Type}`); await loadData(); showToast('success', status, `Leave ${status}`); }
+function renderPending() { const pending = leaveRecords.filter(l => l.Status === 'PENDING'); const body = document.getElementById('pendingBody'); if (!pending.length) { body.innerHTML = '<tr><td colspan="7" class="table-empty">No pending</td></tr>'; return; } body.innerHTML = pending.map(l => `<tr><td style="font-weight:700">${l.Name}</td><td><span class="badge badge-${l.Type === 'PL' ? 'purple' : l.Type === 'SL' ? 'blue' : 'red'}">${l.Type}</span></td><td>${formatDate(l.From)}</td><td>${formatDate(l.To)}</td><td>${l.Days}</td><td style="font-size:12px;color:var(--gray-600)">${l.Reason}</td><td class="sticky-right"><div class="flex gap-8"><button class="btn btn-success btn-sm" onclick="approveLeave('${l.ID}','APPROVED')"><i class="fas fa-check"></i></button><button class="btn btn-danger btn-sm" onclick="approveLeave('${l.ID}','REJECTED')"><i class="fas fa-times"></i></button></div></td></tr>`).join(''); }
+function renderHistory() { const q = document.getElementById('lvSearch')?.value?.toLowerCase() || ''; let data = leaveRecords.filter(l => !q || (l.Name || '').toLowerCase().includes(q) || (l['E-Code'] || '').toLowerCase().includes(q)); const body = document.getElementById('historyBody'); if (!data.length) { body.innerHTML = '<tr><td colspan="9" class="table-empty">No history</td></tr>'; return; } body.innerHTML = data.map(l => `<tr><td style="font-size:12px">${formatDate(l['Applied On'])}</td><td style="font-weight:700">${l.Name}</td><td><span class="badge badge-${l.Type === 'PL' ? 'purple' : l.Type === 'SL' ? 'blue' : 'red'}">${l.Type}</span></td><td>${formatDate(l.From)}</td><td>${formatDate(l.To)}</td><td>${l.Days}</td><td style="font-size:12px;color:var(--gray-600)">${l.Reason}</td><td><span class="badge badge-${l.Status === 'APPROVED' ? 'green' : l.Status === 'REJECTED' ? 'red' : 'amber'}">${l.Status}</span></td><td style="font-size:12px">${l['Approved By'] || '—'}</td></tr>`).join(''); }
+function updateWallet() { const year = new Date().getFullYear(); const usedPL = leaveRecords.filter(l => l.Type === 'PL' && l.Status === 'APPROVED' && new Date(l.From).getFullYear() === year).reduce((s, l) => s + Number(l.Days), 0); const usedSL = leaveRecords.filter(l => l.Type === 'SL' && l.Status === 'APPROVED' && new Date(l.From).getFullYear() === year).reduce((s, l) => s + Number(l.Days), 0); const lwp = leaveRecords.filter(l => l.Type === 'LWP' && l.Status === 'APPROVED' && new Date(l.From).getFullYear() === year).reduce((s, l) => s + Number(l.Days), 0); document.getElementById('walletPL').textContent = Math.max(0, 12 - usedPL); document.getElementById('walletSL').textContent = Math.max(0, 3 - usedSL); document.getElementById('walletLWP').textContent = lwp; document.getElementById('pendingLeave').textContent = leaveRecords.filter(l => l.Status === 'PENDING').length; }
+</script>
+</body>
+</html>

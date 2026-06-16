@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="assets/img/hop-logo-main.png" alt="House of Panchhi HR" onerror="this.style.display='none'">
+      <h1>House of Panchhi HR</h1>
+      <p>Human Resource Management System</p>
+    </div>
+
+    <div id="loginForm">
+      <div class="login-error" id="loginError"><i class="fas fa-exclamation-circle"></i> <span></span></div>
+      <div class="login-field">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="loginEmail" placeholder="your@email.com" autofocus>
+        </div>
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="loginPass" placeholder="••••••••">
+        </div>
+      </div>
+      <div class="login-options">
+        <label><input type="checkbox" id="rememberMe"> Remember me</label>
+        <a onclick="showForgot(true)">Forgot Password?</a>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="handleLogin()">
+        <i class="fas fa-arrow-right-to-bracket"></i> Sign In
+      </button>
+    </div>
+
+    <div id="forgotForm" style="display:none">
+      <div class="forgot-msg" id="forgotMsg"><i class="fas fa-info-circle"></i> <span></span></div>
+      <div id="forgotStep1">
+        <div class="login-field">
+          <label>Registered Email</label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="forgotEmail" placeholder="your@email.com">
+          </div>
+        </div>
+        <button class="login-btn" id="forgotBtn" onclick="handleForgotPassword()">
+          <i class="fas fa-paper-plane"></i> Send OTP
+        </button>
+      </div>
+      <div id="forgotStep2" style="display:none">
+        <div class="login-field">
+          <label>OTP</label>
+          <div class="input-wrap"><i class="fas fa-key"></i><input type="text" id="resetOTP" placeholder="6-digit OTP" maxlength="6"></div>
+        </div>
+        <div class="login-field">
+          <label>New Password</label>
+          <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="resetPass" placeholder="New password"></div>
+        </div>
+        <div class="login-field">
+          <label>Confirm Password</label>
+          <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="resetConfirm" placeholder="Confirm password"></div>
+        </div>
+        <button class="login-btn" id="resetBtn" onclick="handleResetPassword()">
+          <i class="fas fa-rotate-right"></i> Reset Password
+        </button>
+      </div>
+      <div class="back-to-login"><a onclick="showForgot(false)"><i class="fas fa-arrow-left"></i> Back to Login</a></div>
+    </div>
+
+    <div class="login-footer">© 2025 House of Panchhi HR · Pro Edition</div>
+  </div>
+</div>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

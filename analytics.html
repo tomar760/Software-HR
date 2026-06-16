@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.mini-chart { height: 140px; display: flex; align-items: flex-end; gap: 8px; padding: 12px; border: 1px solid var(--gray-200); border-radius: var(--radius-md); background: #fff; }
+.mc-bar { flex: 1; border-radius: 4px 4px 0 0; position: relative; transition: height 0.8s; }
+.mc-bar span { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 700; color: var(--gray-500); }
+.mc-bar .val { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 800; color: var(--gray-700); }
+</style>
+</head>
+<body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'"><div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div></div>
+  <div class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">Main</div><div class="nav-link" data-module="dashboard" onclick="window.location='index.html'"><i class="fas fa-th-large"></i> Dashboard</div></div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link" data-module="leave" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link" data-module="salary" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Operations</div><div class="nav-link" data-module="store" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store</div></div>
+    <div class="nav-section"><div class="nav-section-title">Analytics</div><div class="nav-link active" data-module="analytics"><i class="fas fa-chart-line"></i> Analytics</div><div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div></div>
+    <div class="nav-section"><div class="nav-section-title">System</div><div class="nav-link" data-module="users" onclick="window.location='users.html'"><i class="fas fa-user-shield"></i> User Management</div><div class="nav-link" data-module="settings" onclick="window.location='index.html#settings'"><i class="fas fa-sliders"></i> Settings</div><div class="nav-link" data-module="profile" onclick="window.location='index.html#profile'"><i class="fas fa-user-circle"></i> My Profile</div><div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div></div>
+  </div>
+  <div class="sidebar-footer"><div class="user-avatar" id="sidebarAvatar">U</div><div class="user-info"><h4 id="sidebarName">User</h4><span><span class="online-dot"></span> <span class="badge-role">Role</span></span></div></div>
+</nav>
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left"><button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><div class="page-title"><h1>Analytics Dashboard</h1><p>Real-time insights & reports</p></div></div>
+    <div class="header-right"><div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div><div class="header-avatar" id="headerAvatar" onclick="window.location='index.html#profile'">U</div></div>
+  </header>
+  <div class="page-content">
+    <div class="stat-cards">
+      <div class="stat-card purple"><div class="stat-icon purple"><i class="fas fa-users"></i></div><div class="stat-number" id="an-emp">0</div><div class="stat-label">Active Employees</div></div>
+      <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-user-check"></i></div><div class="stat-number" id="an-present">0</div><div class="stat-label">Present Today</div></div>
+      <div class="stat-card red"><div class="stat-icon red"><i class="fas fa-user-xmark"></i></div><div class="stat-number" id="an-absent">0</div><div class="stat-label">Absent Today</div></div>
+      <div class="stat-card amber"><div class="stat-icon amber"><i class="fas fa-door-open"></i></div><div class="stat-number" id="an-gp">0</div><div class="stat-label">On Gate Pass</div></div>
+      <div class="stat-card blue"><div class="stat-icon blue"><i class="fas fa-money-bill-wave"></i></div><div class="stat-number" id="an-payroll">₹0</div><div class="stat-label">Payroll This Month</div></div>
+      <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-clock-rotate-left"></i></div><div class="stat-number" id="an-pending">0</div><div class="stat-label">Pending Leaves</div></div>
+    </div>
+    <div class="analytics-grid">
+      <div class="card"><div class="card-title"><i class="fas fa-chart-bar"></i> Monthly Attendance</div><div class="mini-chart" id="attChart"></div></div>
+      <div class="card"><div class="card-title"><i class="fas fa-chart-pie"></i> Department Split</div><div id="deptChart" style="display:flex;align-items:center;gap:20px"><div class="donut" style="width:110px;height:110px;border-radius:50%;background:var(--gray-200)"></div><div id="deptLegend"></div></div></div>
+      <div class="card"><div class="card-title"><i class="fas fa-chart-line"></i> Salary Trend</div><div class="mini-chart" id="salChart"></div></div>
+      <div class="card"><div class="card-title"><i class="fas fa-boxes-stacked"></i> Store Value</div><div class="mini-chart" id="storeChart"></div></div>
+    </div>
+    <div class="app-footer"><div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div></div>
+  </div>
+</div>
+</div>
+<script src="assets/js/app.js"></script>
+<script>
+let employees = [], attendance = [], gatepasses = [], leaveRecords = [], salaryRecords = [], storeEntries = [];
+window.addEventListener('load', loadAll);
+async function loadAll() {
+  [employees, attendance, gatepasses, leaveRecords, salaryRecords, storeEntries] = await Promise.all([
+    GSheet.read('Employees'), GSheet.read('Attendance'), GSheet.read('GatePass'), GSheet.read('Leave'), GSheet.read('Salary'), GSheet.read('Store')
+  ]);
+  const today = todayStr(); const active = employees.filter(e => e.Status === 'ACTIVE');
+  document.getElementById('an-emp').textContent = active.length;
+  const att = attendance.filter(r => r.Date === today);
+  document.getElementById('an-present').textContent = att.filter(r => r.Status === 'P' || r.Status === 'L').length;
+  document.getElementById('an-absent').textContent = att.filter(r => r.Status === 'A').length;
+  document.getElementById('an-gp').textContent = gatepasses.filter(g => g.Date === today && g.Status === 'OUT').length;
+  const month = today.slice(0, 7); const sal = salaryRecords.filter(r => r.Month === month);
+  document.getElementById('an-payroll').textContent = formatINR(sal.reduce((s, r) => s + Number(r['Net Salary']), 0));
+  document.getElementById('an-pending').textContent = leaveRecords.filter(l => l.Status === 'PENDING').length;
+  renderAttChart(); renderDeptChart(); renderSalChart(); renderStoreChart();
+}
+function renderAttChart() {
+  const chart = document.getElementById('attChart'); const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; const now = new Date();
+  const data = Array.from({ length: 6 }, (_, i) => { const m = (now.getMonth() - 5 + i + 12) % 12; const recs = attendance.filter(r => r.Date && Number(r.Date.slice(5, 7)) === m + 1); const total = recs.length || 1; const present = recs.filter(r => r.Status === 'P' || r.Status === 'L').length; return { label: months[m], val: Math.round(present / total * 100) || 0 }; });
+  const max = Math.max(...data.map(d => d.val), 1);
+  chart.innerHTML = data.map(d => `<div class="mc-bar" style="height:${Math.round(d.val / max * 100)}%;background:${d.val > 80 ? 'var(--success)' : d.val > 50 ? 'var(--warning)' : 'var(--danger)'}" title="${d.val}%"><div class="val">${d.val}%</div><span>${d.label}</span></div>`).join('');
+}
+function renderDeptChart() {
+  const counts = {}; employees.forEach(e => { counts[e.Department] = (counts[e.Department] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5); const total = employees.length || 1;
+  const colors = ['#6c47ff', '#10b981', '#f59e0b', '#3b82f6', '#ef4444']; let start = 0, conic = '';
+  sorted.forEach(([d, c], i) => { const pct = Math.round(c / total * 100); conic += `${colors[i]} ${start}% ${start + pct}%,`; start += pct; });
+  if (start < 100) conic += `var(--gray-200) ${start}% 100%`; else conic = conic.slice(0, -1);
+  document.getElementById('deptChart').querySelector('.donut').style.background = `conic-gradient(${conic})`;
+  document.getElementById('deptLegend').innerHTML = sorted.map(([d, c], i) => `<div style="font-size:12px;font-weight:600;color:var(--gray-700)"><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${colors[i]};margin-right:6px"></span>${d} (${c})</div>`).join('');
+}
+function renderSalChart() {
+  const chart = document.getElementById('salChart'); const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; const now = new Date();
+  const data = Array.from({ length: 6 }, (_, i) => { const m = (now.getMonth() - 5 + i + 12) % 12; const mStr = String(m + 1).padStart(2, '0'); const total = salaryRecords.filter(r => r.Month && r.Month.endsWith('-' + mStr)).reduce((s, r) => s + Number(r['Net Salary']), 0); return { label: months[m], val: total }; });
+  const max = Math.max(...data.map(d => d.val), 1);
+  chart.innerHTML = data.map(d => `<div class="mc-bar" style="height:${Math.round(d.val / max * 100)}%;background:var(--primary)"><div class="val">${formatINR(d.val)}</div><span>${d.label}</span></div>`).join('');
+}
+function renderStoreChart() {
+  const chart = document.getElementById('storeChart'); const cats = ['Plant', 'HO', 'Global']; const data = cats.map(c => ({ label: c, val: storeEntries.filter(e => e.Category === c).reduce((s, e) => s + Number(e.Total), 0) }));
+  const max = Math.max(...data.map(d => d.val), 1); const colors = ['#10b981', '#f59e0b', '#3b82f6'];
+  chart.innerHTML = data.map((d, i) => `<div class="mc-bar" style="height:${Math.round(d.val / max * 100)}%;background:${colors[i]}"><div class="val">${formatINR(d.val)}</div><span>${d.label}</span></div>`).join('');
+}
+</script>
+</body>
+</html>

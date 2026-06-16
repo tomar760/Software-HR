@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Management — House of Panchhi HR</title>
+<link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.role-sa { background: var(--primary-light); color: var(--primary); }
+.role-director { background: var(--success-light); color: var(--success); }
+.role-user { background: var(--gray-100); color: var(--gray-600); }
+.role-badge { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.module-chip { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; margin: 1px; background: var(--success-light); color: var(--success); }
+.permission-card { border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
+.permission-card:hover { border-color: var(--primary); background: var(--primary-light); }
+.permission-card.active { border-color: var(--success); background: var(--success-light); }
+.permission-card input { width: 16px; height: 16px; accent-color: var(--success); }
+.permission-card label { font-size: 12px; font-weight: 700; color: var(--gray-700); cursor: pointer; flex: 1; }
+.permission-card i { color: var(--gray-400); font-size: 14px; }
+.permission-card.active i { color: var(--success); }
+.status-active { color: var(--success); font-weight: 800; }
+.status-inactive { color: var(--danger); font-weight: 800; }
+.user-avatar-md { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0; overflow: hidden; }
+.user-avatar-md img { width: 100%; height: 100%; object-fit: cover; }
+</style>
+</head>
+<body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'">
+    <div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section"><div class="nav-section-title">Main</div><div class="nav-link" data-module="dashboard" onclick="window.location='index.html'"><i class="fas fa-th-large"></i> Dashboard</div></div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link" data-module="leave" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link" data-module="salary" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Operations</div>
+      <div class="nav-link" data-module="store" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Analytics</div>
+      <div class="nav-link" data-module="analytics" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div>
+      <div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">System</div>
+      <div class="nav-link active" data-module="users"><i class="fas fa-user-shield"></i> User Management</div>
+      <div class="nav-link" data-module="settings" onclick="window.location='index.html#settings'"><i class="fas fa-sliders"></i> Settings</div>
+      <div class="nav-link" data-module="profile" onclick="window.location='index.html#profile'"><i class="fas fa-user-circle"></i> My Profile</div>
+      <div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="user-avatar" id="sidebarAvatar">U</div>
+    <div class="user-info"><h4 id="sidebarName">User</h4><span><span class="online-dot"></span> <span class="badge-role">Role</span></span></div>
+  </div>
+</nav>
+
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="page-title"><h1>User Management</h1><p>Manage logins, roles & permissions</p></div>
+    </div>
+    <div class="header-right">
+      <div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div>
+      <button class="header-icon-btn" onclick="loadUsers()" title="Refresh"><i class="fas fa-rotate"></i></button>
+      <div class="header-avatar" id="headerAvatar" onclick="window.location='index.html#profile'">U</div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div id="adminAlert" class="alert alert-info" style="display:none"><i class="fas fa-crown"></i><div><strong>Admin Access Only.</strong> This page is visible only to Super Admin and Director.</div></div>
+
+    <div class="stat-cards">
+      <div class="stat-card purple"><div class="stat-icon purple"><i class="fas fa-users"></i></div><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Users</div></div>
+      <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-user-shield"></i></div><div class="stat-number" id="statAdmins">0</div><div class="stat-label">Admins</div></div>
+      <div class="stat-card blue"><div class="stat-icon blue"><i class="fas fa-user-check"></i></div><div class="stat-number" id="statActive">0</div><div class="stat-label">Active</div></div>
+      <div class="stat-card red"><div class="stat-icon red"><i class="fas fa-clock-rotate-left"></i></div><div class="stat-number" id="statLogs">0</div><div class="stat-label">Recent Logs</div></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="openUserModal()"><i class="fas fa-user-plus"></i> Add User</button>
+      <button class="btn btn-outline" onclick="loadUsers()"><i class="fas fa-rotate"></i> Refresh</button>
+      <button class="btn btn-outline" onclick="loadActivity()"><i class="fas fa-clock-rotate-left"></i> Activity Log</button>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header"><h3><i class="fas fa-users-gear"></i> Users</h3><span class="badge badge-purple">Max 10</span></div>
+      <div class="table-wrapper">
+        <table><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Modules</th><th>Status</th><th>Last Login</th><th class="sticky-right">Actions</th></tr></thead><tbody id="usersBody"><tr><td colspan="7" class="table-empty"><i class="fas fa-spinner spin"></i> Loading...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="table-card" id="logCard" style="display:none">
+      <div class="table-header"><h3><i class="fas fa-clock-rotate-left"></i> Activity Log</h3><span class="badge badge-green"><span class="online-dot pulse"></span> Live</span></div>
+      <div class="table-wrapper">
+        <table><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Module</th><th>Details</th></tr></thead><tbody id="logBody"><tr><td colspan="5" class="table-empty">No activity</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="app-footer"><div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div></div>
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modal-user">
+  <div class="modal-box" style="max-width:620px;max-height:92vh;overflow-y:auto">
+    <div class="modal-header"><h3 id="userModalTitle"><i class="fas fa-user-plus" style="color:var(--primary);margin-right:8px"></i>Add User</h3><button class="modal-close" onclick="closeModal('user')"><i class="fas fa-xmark"></i></button></div>
+    <div class="form-grid form-grid-2">
+      <div class="form-group"><label>Full Name</label><input id="u_name" placeholder="e.g. Rahul Sharma"></div>
+      <div class="form-group"><label>Email</label><input id="u_email" type="email" placeholder="user@email.com"></div>
+      <div class="form-group" id="u_passGroup"><label>Password</label><input id="u_password" type="password" placeholder="Min 6 characters"></div>
+      <div class="form-group"><label>Role</label><select id="u_role" onchange="togglePermissions()"><option value="">Select...</option><option>Super Admin</option><option>Director</option><option>User</option></select></div>
+      <div class="form-group"><label>Status</label><select id="u_status"><option>ACTIVE</option><option>INACTIVE</option></select></div>
+      <div class="form-group"><label>Phone</label><input id="u_phone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+    </div>
+    <div id="permBox" style="margin-top:18px;padding:16px;background:var(--gray-50);border-radius:var(--radius-md);border:1px solid var(--gray-200)">
+      <div style="font-size:13px;font-weight:800;color:var(--gray-900);margin-bottom:12px"><i class="fas fa-lock-open" style="color:var(--primary);margin-right:6px"></i>Module Permissions</div>
+      <div class="form-grid" id="permGrid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('user')">Cancel</button><button class="btn btn-primary" id="saveUserBtn" onclick="saveUser()"><i class="fas fa-save"></i> Save User</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-box modal-box-sm modal-confirm">
+    <div class="modal-confirm-icon red"><i class="fas fa-trash-alt"></i></div><h3>Are you sure?</h3><p id="confirmMsg">This cannot be undone.</p>
+    <div class="modal-footer" style="justify-content:center"><button class="btn btn-outline" onclick="closeModal('confirm')">Cancel</button><button class="btn btn-danger btn-confirm-ok">Yes, Delete</button></div>
+  </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+let users = [], currentId = null, logs = [];
+
+window.addEventListener('load', () => {
+  if (!Auth.isAdmin()) {
+    document.getElementById('adminAlert').className = 'alert alert-danger';
+    document.getElementById('adminAlert').innerHTML = '<i class="fas fa-ban"></i><div><strong>Access Denied.</strong> Only Super Admin and Director can access this page.</div>';
+    document.getElementById('adminAlert').style.display = 'flex';
+    setTimeout(() => window.location.href = 'index.html', 1500);
+    return;
+  }
+  document.getElementById('adminAlert').style.display = 'flex';
+  buildPermGrid();
+  loadUsers();
+});
+
+function buildPermGrid() {
+  const grid = document.getElementById('permGrid'); grid.innerHTML = '';
+  ALL_MODULES.forEach(mod => {
+    const m = MODULE_META[mod];
+    const card = document.createElement('div'); card.className = 'permission-card';
+    card.innerHTML = `<i class="fas ${m.icon}"></i><input type="checkbox" id="perm_${mod}" value="${mod}"><label for="perm_${mod}">${m.label}</label>`;
+    card.onclick = e => { if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') card.querySelector('input').click(); card.classList.toggle('active', card.querySelector('input').checked); };
+    grid.appendChild(card);
+  });
+}
+
+function togglePermissions() {
+  const role = document.getElementById('u_role').value;
+  const box = document.getElementById('permBox');
+  if (role === 'Super Admin' || role === 'Director') {
+    box.style.opacity = '0.5'; box.style.pointerEvents = 'none';
+    document.querySelectorAll('#permGrid input').forEach(cb => { cb.checked = true; cb.closest('.permission-card').classList.add('active'); });
+  } else if (role === 'User') {
+    box.style.opacity = '1'; box.style.pointerEvents = 'auto';
+  } else {
+    box.style.opacity = '0.5'; box.style.pointerEvents = 'none';
+  }
+}
+
+async function loadUsers() {
+  document.getElementById('usersBody').innerHTML = '<tr><td colspan="7" class="table-empty"><i class="fas fa-spinner spin"></i> Loading...</td></tr>';
+  try {
+    const res = await fetch(CONFIG.WEB_APP_URL + '?sheet=Auth&action=GET_USERS');
+    const data = await res.json();
+    users = data.users || [];
+  } catch (e) { users = []; }
+  renderUsers();
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = users.length;
+  document.getElementById('statAdmins').textContent = users.filter(u => u.role === 'Super Admin' || u.role === 'Director').length;
+  document.getElementById('statActive').textContent = users.filter(u => (u.status || '').toUpperCase() === 'ACTIVE').length;
+  document.getElementById('statLogs').textContent = logs.length;
+}
+
+function renderUsers() {
+  const tbody = document.getElementById('usersBody');
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" class="table-empty">No users</td></tr>'; return; }
+  tbody.innerHTML = '';
+  users.forEach(u => {
+    const roleClass = u.role === 'Super Admin' ? 'role-sa' : u.role === 'Director' ? 'role-director' : 'role-user';
+    const modules = (u.modules || []).map(m => `<span class="module-chip">${MODULE_META[m]?.label || m}</span>`).join('') || '—';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="flex items-center gap-12"><div class="user-avatar-md" style="background:${avatarColor(u.name)}">${initials(u.name)}</div><div><div style="font-weight:700">${u.name}</div><div class="font-mono" style="font-size:11px;color:var(--gray-400)">${u.id}</div></div></div></td>
+      <td style="font-size:12.5px">${u.email}</td>
+      <td><span class="role-badge ${roleClass}">${u.role}</span></td>
+      <td style="max-width:220px;line-height:1.6">${modules}</td>
+      <td><span class="status-${(u.status || '').toLowerCase()}">${u.status || 'ACTIVE'}</span></td>
+      <td style="font-size:12px;color:var(--gray-500)">${u.lastLogin || '—'}</td>
+      <td class="sticky-right"><div class="flex gap-8"><button class="btn btn-outline btn-icon btn-sm" onclick="editUser('${u.id}')"><i class="fas fa-pen"></i></button><button class="btn btn-danger btn-icon btn-sm" onclick="confirmDelete('${u.id}')"><i class="fas fa-trash"></i></button></div></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function openUserModal() {
+  currentId = null;
+  document.getElementById('userModalTitle').innerHTML = '<i class="fas fa-user-plus" style="color:var(--primary);margin-right:8px"></i>Add User';
+  ['u_name','u_email','u_password','u_phone'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('u_role').value = ''; document.getElementById('u_status').value = 'ACTIVE';
+  document.getElementById('u_passGroup').style.display = 'block';
+  document.querySelectorAll('#permGrid input').forEach(cb => { cb.checked = false; cb.closest('.permission-card').classList.remove('active'); });
+  document.getElementById('permBox').style.opacity = '0.5'; document.getElementById('permBox').style.pointerEvents = 'none';
+  showModal('user');
+}
+
+function editUser(id) {
+  const u = users.find(x => x.id === id); if (!u) return;
+  currentId = id;
+  document.getElementById('userModalTitle').innerHTML = `<i class="fas fa-pen" style="color:var(--primary);margin-right:8px"></i>Edit — ${u.name}`;
+  document.getElementById('u_name').value = u.name;
+  document.getElementById('u_email').value = u.email;
+  document.getElementById('u_password').value = '';
+  document.getElementById('u_role').value = u.role;
+  document.getElementById('u_status').value = u.status || 'ACTIVE';
+  document.getElementById('u_phone').value = u.phone || '';
+  document.getElementById('u_passGroup').querySelector('label').textContent = 'New Password (leave blank)';
+  togglePermissions();
+  document.querySelectorAll('#permGrid input').forEach(cb => {
+    cb.checked = (u.modules || []).includes(cb.value) || u.role === 'Super Admin' || u.role === 'Director';
+    cb.closest('.permission-card').classList.toggle('active', cb.checked);
+  });
+  showModal('user');
+}
+
+async function saveUser() {
+  const name = document.getElementById('u_name').value.trim();
+  const email = document.getElementById('u_email').value.trim().toLowerCase();
+  const password = document.getElementById('u_password').value;
+  const role = document.getElementById('u_role').value;
+  const status = document.getElementById('u_status').value;
+  const phone = document.getElementById('u_phone').value.trim();
+  if (!name || !email || !role) { showToast('error','Required','Name, email, role required'); return; }
+  if (!currentId && !password) { showToast('error','Required','Password required for new user'); return; }
+  if (password && password.length < 6) { showToast('error','Weak','Min 6 characters'); return; }
+  let modules = [];
+  if (role === 'User') {
+    document.querySelectorAll('#permGrid input:checked').forEach(cb => modules.push(cb.value));
+    if (!modules.length) { showToast('error','Permissions','Select at least one module'); return; }
+  } else { modules = ALL_MODULES; }
+  const payload = { id: currentId || '', name, email, password, role, status, modules: modules.join(','), phone, createdBy: Auth.get()?.name || 'Admin' };
+  const btn = document.getElementById('saveUserBtn'); btn.innerHTML = '<i class="fas fa-spinner spin"></i> Saving...'; btn.disabled = true;
+  await GSheet.send('Auth', payload, currentId ? 'UPDATE' : 'CREATE');
+  await logActivity(currentId ? 'Updated user' : 'Created user', 'users', `${name} (${role})`);
+  await sleep(1000);
+  await loadUsers(); closeModal('user');
+  showToast('success','Saved',`User ${name} saved`);
+  btn.innerHTML = '<i class="fas fa-save"></i> Save User'; btn.disabled = false;
+}
+
+function confirmDelete(id) {
+  const u = users.find(x => x.id === id);
+  document.getElementById('confirmMsg').textContent = `Delete ${u?.name}?`;
+  document.querySelector('.btn-confirm-ok').onclick = () => deleteUser(id);
+  showModal('confirm');
+}
+
+async function deleteUser(id) {
+  const u = users.find(x => x.id === id);
+  await GSheet.send('Auth', { id }, 'DELETE');
+  await logActivity('Deleted user', 'users', u?.name || id);
+  closeModal('confirm'); await loadUsers();
+  showToast('success','Deleted','User removed');
+}
+
+async function loadActivity() {
+  document.getElementById('logCard').style.display = 'block';
+  try {
+    const res = await fetch(CONFIG.WEB_APP_URL + '?sheet=ActivityLog&filter=50');
+    const data = await res.json();
+    logs = data.logs || [];
+  } catch (e) { logs = []; }
+  const body = document.getElementById('logBody');
+  if (!logs.length) { body.innerHTML = '<tr><td colspan="5" class="table-empty">No activity</td></tr>'; }
+  else { body.innerHTML = logs.map(l => `<tr><td class="font-mono" style="font-size:11px;color:var(--gray-400)">${l.Timestamp}</td><td style="font-weight:600">${l.User}</td><td><span class="badge badge-purple">${l.Action}</span></td><td>${l.Module}</td><td style="font-size:12px;color:var(--gray-600)">${l.Details}</td></tr>`).join(''); }
+  updateStats();
+}
+</script>
+</body>
+</html>
