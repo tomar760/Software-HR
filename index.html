@@ -3,764 +3,472 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>House of Panchhi HR</title>
+<title>Dashboard — House of Panchhi HR</title>
 <link rel="icon" type="image/png" href="assets/img/hop-logo-wings.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-.dashboard-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:20px;margin-bottom:24px;}
-.chart-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:22px;}
-.chart-card h3{font-size:14px;font-weight:800;color:var(--gray-900);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.chart-card h3 i{color:var(--primary);}
-.bar-chart{display:flex;align-items:flex-end;gap:10px;height:160px;padding-bottom:24px;position:relative;}
-.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;}
-.bar{width:100%;border-radius:6px 6px 0 0;min-width:24px;position:relative;transition:height 1s cubic-bezier(.4,0,.2,1);cursor:pointer;}
-.bar:hover{opacity:.82;}
-.bar-val{font-size:10px;font-weight:800;color:var(--gray-700);position:absolute;top:-18px;left:50%;transform:translateX(-50%);white-space:nowrap;}
-.bar-label{font-size:10px;color:var(--gray-500);font-weight:600;margin-top:4px;}
-.donut-wrap{display:flex;align-items:center;gap:20px;margin-top:8px;}
-.donut{width:110px;height:110px;border-radius:50%;position:relative;flex-shrink:0;}
-.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.donut-center .dn{font-size:20px;font-weight:800;color:var(--gray-900);}
-.donut-center .dl{font-size:9px;color:var(--gray-400);font-weight:700;text-transform:uppercase;}
-.donut-legend{font-size:11.5px;}
-.donut-legend li{display:flex;align-items:center;gap:6px;margin-bottom:7px;color:var(--gray-600);font-weight:500;list-style:none;}
-.donut-legend li span{width:9px;height:9px;border-radius:3px;flex-shrink:0;display:inline-block;}
-.reminder-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px;}
-.reminder-card h3{font-size:14px;font-weight:800;color:var(--gray-900);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.reminder-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:8px;}
-.reminder-item:last-child{margin-bottom:0;}
-.reminder-item.red{background:var(--danger-light);}
-.reminder-item.amber{background:var(--warning-light);}
-.reminder-item.blue{background:var(--primary-light);}
-.reminder-item.green{background:var(--success-light);}
-.reminder-item i{font-size:14px;margin-top:1px;flex-shrink:0;}
-.reminder-item.red i{color:var(--danger);}
-.reminder-item.amber i{color:var(--warning);}
-.reminder-item.blue i{color:var(--primary);}
-.reminder-item.green i{color:var(--success);}
-.reminder-item .rt{font-size:12.5px;font-weight:700;color:var(--gray-800);}
-.reminder-item .rs{font-size:11px;color:var(--gray-500);margin-top:2px;}
-.birthday-card{background:linear-gradient(135deg,#fdf2f8,#fce7f3);border:1px solid #fbcfe8;border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;animation:fadeIn .4s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.birthday-card i{font-size:22px;color:var(--primary);}
-.birthday-card .bname{font-size:13px;font-weight:800;color:var(--gray-900);}
-.birthday-card .bdept{font-size:11.5px;color:var(--gray-500);margin-top:2px;}
-.activity-time{font-size:11px;color:var(--gray-400);white-space:nowrap;font-family:'JetBrains Mono',monospace;}
-.stat-card.loading .stat-number{opacity:.4;}
-@media(max-width:900px){.dashboard-grid{grid-template-columns:1fr;}}
+.dashboard-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; margin-bottom: 24px; }
+.chart-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 22px; transition: all 0.25s ease; }
+.chart-card:hover { box-shadow: var(--shadow-md); }
+.chart-card h3 { font-size: 14px; font-weight: 800; color: var(--gray-900); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.chart-card h3 i { color: var(--primary); }
+.bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 160px; padding-bottom: 24px; position: relative; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.bar { width: 100%; border-radius: 6px 6px 0 0; min-width: 24px; position: relative; transition: height 1s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+.bar:hover { opacity: 0.82; }
+.bar-val { font-size: 10px; font-weight: 800; color: var(--gray-700); position: absolute; top: -18px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+.bar-label { font-size: 10px; color: var(--gray-500); font-weight: 600; margin-top: 4px; }
+.donut-wrap { display: flex; align-items: center; gap: 20px; margin-top: 8px; }
+.donut { width: 110px; height: 110px; border-radius: 50%; position: relative; flex-shrink: 0; }
+.donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 68px; height: 68px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.donut-center .dn { font-size: 20px; font-weight: 800; color: var(--gray-900); }
+.donut-center .dl { font-size: 9px; color: var(--gray-400); font-weight: 700; text-transform: uppercase; }
+.donut-legend { font-size: 11.5px; }
+.donut-legend li { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; color: var(--gray-600); font-weight: 500; list-style: none; }
+.donut-legend li span { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
+.reminder-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 20px; }
+.reminder-card h3 { font-size: 14px; font-weight: 800; color: var(--gray-900); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.reminder-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); margin-bottom: 8px; }
+.reminder-item:last-child { margin-bottom: 0; }
+.reminder-item.red { background: var(--danger-light); } .reminder-item.amber { background: var(--warning-light); }
+.reminder-item.blue { background: var(--info-light); } .reminder-item.green { background: var(--success-light); }
+.reminder-item i { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.reminder-item.red i { color: var(--danger); } .reminder-item.amber i { color: var(--warning); }
+.reminder-item.blue i { color: var(--info); } .reminder-item.green i { color: var(--success); }
+.reminder-item .rt { font-size: 12.5px; font-weight: 700; color: var(--gray-800); }
+.reminder-item .rs { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.birthday-card { background: linear-gradient(135deg,#fdf4ff,#fce7f3); border: 1px solid #f9a8d4; border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.birthday-card i { font-size: 20px; color: #ec4899; }
+.birthday-card .bname { font-size: 13px; font-weight: 800; color: var(--gray-900); }
+.birthday-card .bdept { font-size: 11.5px; color: var(--gray-500); }
+.activity-time { font-size: 11px; color: var(--gray-400); white-space: nowrap; font-family: 'JetBrains Mono',monospace; }
+@media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+<div class="app-wrapper active" id="appWrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ══════════ LOGIN ══════════ -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-bg-pattern"></div>
-  <div class="login-card">
-    <div class="login-logo">
-      <img src="assets/img/hop-logo-wings.png" alt="House of Panchhi" class="login-logo-img"
-        onerror="this.style.display='none'">
-      <h1>House of Panchhi</h1>
-      <p>HR Management System v2.0</p>
-    </div>
-    <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
-    </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password">
-    </div>
-    <div class="login-error" id="loginError" style="display:none"></div>
-    <button class="login-btn" id="loginBtn" onclick="doLogin()">
-      <i class="fas fa-arrow-right-to-bracket"></i> Sign In
-    </button>
-    <div class="login-footer">© 2025 House of Panchhi HR &nbsp;·&nbsp; v2.0</div>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img" onerror="this.outerHTML='<div class=\'brand-icon\'><i class=\'fas fa-feather-pointed\'></i></div>'">
+    <div class="brand-text"><h2>House of Panchhi</h2><span>HR Pro</span></div>
   </div>
-</div>
-
-<!-- ══════════ APP ══════════ -->
-<div class="app-wrapper" id="appWrapper">
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <img src="assets/img/hop-logo-wings.png" alt="HOP" class="sidebar-logo-img"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="brand-icon" style="display:none"><i class="fas fa-feather-pointed"></i></div>
-      <div class="brand-text"><h2>House of Panchhi</h2><span>HR Software v2.0</span></div>
+  <div class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">Main</div>
+      <div class="nav-link active" data-page="dashboard" data-module="dashboard" onclick="navigateTo('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
     </div>
-    <div class="sidebar-nav">
-      <div class="nav-section">
-        <div class="nav-section-title">Main</div>
-        <div class="nav-link active"><i class="fas fa-th-large"></i> Dashboard</div>
+    <div class="nav-section">
+      <div class="nav-section-title">HR & Payroll</div>
+      <div class="nav-link" data-module="employees" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employees</div>
+      <div class="nav-link" data-module="attendance" onclick="window.location='attendance.html'"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="nav-link" data-module="gatepass" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
+      <div class="nav-link" data-module="leave" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave</div>
+      <div class="nav-link" data-module="salary" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Operations</div>
+      <div class="nav-link" data-module="store" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store</div>
+      <div class="nav-link" onclick="showMaintenance('Expenses Tracker','Track expenses')"><i class="fas fa-receipt"></i> Expenses <span class="nav-soon">Soon</span></div>
+      <div class="nav-link" onclick="showMaintenance('Visitor Log','Track visitors')"><i class="fas fa-person-walking-arrow-right"></i> Visitor Log <span class="nav-soon">Soon</span></div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Analytics</div>
+      <div class="nav-link" data-module="analytics" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div>
+      <div class="nav-link" data-module="teams" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">System</div>
+      <div class="nav-link" data-module="users" onclick="window.location='users.html'"><i class="fas fa-user-shield"></i> User Management</div>
+      <div class="nav-link" data-page="settings" data-module="settings" onclick="navigateTo('settings')"><i class="fas fa-sliders"></i> Settings</div>
+      <div class="nav-link" data-page="profile" data-module="profile" onclick="navigateTo('profile')"><i class="fas fa-user-circle"></i> My Profile</div>
+      <div class="nav-link" onclick="Auth.logout()"><i class="fas fa-power-off"></i> Logout</div>
+    </div>
+  </div>
+  <div class="sidebar-footer" onclick="navigateTo('profile')">
+    <div class="user-avatar" id="sidebarAvatar">U</div>
+    <div class="user-info">
+      <h4 id="sidebarName">User</h4>
+      <span><span class="online-dot"></span> <span class="badge-role">Role</span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="main-content">
+  <header class="top-header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="page-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Overview & quick actions</p></div>
+    </div>
+    <div class="header-right">
+      <div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock" class="clock-label">00:00:00</span></div>
+      <button class="header-icon-btn" onclick="syncAll()" title="Refresh"><i class="fas fa-rotate"></i></button>
+      <button class="header-icon-btn" onclick="showToast('info','Notifications','No new notifications')"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" onclick="navigateTo('profile')">U</div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div style="margin-bottom:20px">
+        <h2 id="greetingText" style="font-size:22px;font-weight:800;color:var(--gray-900)">Good Morning!</h2>
+        <p id="greetingDate" style="font-size:13px;color:var(--gray-500);margin-top:3px"></p>
       </div>
-      <div class="nav-section">
-        <div class="nav-section-title">HR & Payroll</div>
-        <div class="nav-link" onclick="window.location='employees.html'"><i class="fas fa-users"></i> Employee Directory</div>
-        <div class="nav-link has-sub" onclick="toggleSubNav(this)">
-          <i class="fas fa-calendar-check"></i> Attendance
-          <i class="fas fa-chevron-right nav-chevron"></i>
+
+      <div id="birthdaySection" style="display:none;margin-bottom:20px"></div>
+
+      <div class="stat-cards">
+        <div class="stat-card purple"><div class="stat-icon purple"><i class="fas fa-users"></i></div><div class="stat-number" id="ds-totalEmp">0</div><div class="stat-label">Total Employees</div></div>
+        <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-user-check"></i></div><div class="stat-number" id="ds-presentToday">0</div><div class="stat-label">Present Today</div></div>
+        <div class="stat-card red"><div class="stat-icon red"><i class="fas fa-user-xmark"></i></div><div class="stat-number" id="ds-absentToday">0</div><div class="stat-label">Absent Today</div></div>
+        <div class="stat-card amber"><div class="stat-icon amber"><i class="fas fa-door-open"></i></div><div class="stat-number" id="ds-onGatepass">0</div><div class="stat-label">On Gate Pass</div></div>
+        <div class="stat-card blue"><div class="stat-icon blue"><i class="fas fa-money-bill-wave"></i></div><div class="stat-number" id="ds-payroll">₹0</div><div class="stat-label">Payroll This Month</div></div>
+      </div>
+
+      <div class="section-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+      <div class="quick-grid">
+        <div class="quick-btn" onclick="window.location='employees.html'"><i class="fas fa-user-plus"></i><span>Add Employee</span></div>
+        <div class="quick-btn" onclick="window.location='attendance.html'"><i class="fas fa-clipboard-check"></i><span>Attendance</span></div>
+        <div class="quick-btn" onclick="window.location='gatepass.html'"><i class="fas fa-passport"></i><span>Gate Pass</span></div>
+        <div class="quick-btn" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i><span>Leave</span></div>
+        <div class="quick-btn" onclick="window.location='salary.html'"><i class="fas fa-calculator"></i><span>Payroll</span></div>
+        <div class="quick-btn" onclick="window.location='store.html'"><i class="fas fa-box"></i><span>Store</span></div>
+        <div class="quick-btn" onclick="showMaintenance('Task Manager','Task module coming soon')"><i class="fas fa-list-check"></i><span>Tasks</span></div>
+        <div class="quick-btn" onclick="showMaintenance('Announcements','Announcements coming soon')"><i class="fas fa-bullhorn"></i><span>Announce</span></div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="chart-card">
+          <h3><i class="fas fa-chart-bar"></i> Monthly Attendance Overview</h3>
+          <div class="bar-chart" id="dashBarChart"></div>
         </div>
-        <div class="nav-sub">
-          <div class="nav-link" onclick="window.location='attendance.html'"><i class="fas fa-upload"></i> Upload Attendance</div>
-          <div class="nav-link" onclick="window.location='attendance.html'"><i class="fas fa-user-clock"></i> Late Report</div>
-          <div class="nav-link" onclick="window.location='attendance.html'"><i class="fas fa-user-xmark"></i> Absent Report</div>
+        <div class="chart-card">
+          <h3><i class="fas fa-chart-pie"></i> Department Split</h3>
+          <div class="donut-wrap">
+            <div class="donut" id="dashDonut"><div class="donut-center"><div class="dn" id="dashDonutNum">0</div><div class="dl">Total</div></div></div>
+            <ul class="donut-legend" id="dashDonutLegend"></ul>
+          </div>
         </div>
-        <div class="nav-link" onclick="window.location='gatepass.html'"><i class="fas fa-door-open"></i> Gate Pass</div>
-        <div class="nav-link" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i> Leave Management</div>
-        <div class="nav-link" onclick="window.location='salary.html'"><i class="fas fa-money-bill-wave"></i> Salary / Payroll</div>
       </div>
-      <div class="nav-section">
-        <div class="nav-section-title">Operations</div>
-        <div class="nav-link" onclick="window.location='store.html'"><i class="fas fa-boxes-stacked"></i> Store & Inventory</div>
-        <div class="nav-link" onclick="showMaintenance('Expenses','Coming soon!')"><i class="fas fa-receipt"></i> Expenses <span class="nav-soon">Soon</span></div>
-        <div class="nav-link" onclick="showMaintenance('Visitor Log','Coming soon!')"><i class="fas fa-person-walking-arrow-right"></i> Visitor Log <span class="nav-soon">Soon</span></div>
+
+      <div class="grid-1-2">
+        <div class="reminder-card">
+          <h3><i class="fas fa-bell" style="color:var(--warning)"></i> Reminders & Alerts</h3>
+          <div id="dashReminders">
+            <div class="reminder-item amber"><i class="fas fa-exclamation-circle"></i><div><div class="rt">Pending PO / PR</div><div class="rs" id="dash-poCount">Checking...</div></div></div>
+            <div class="reminder-item red"><i class="fas fa-user-clock"></i><div><div class="rt">Late Today</div><div class="rs" id="dash-lateCount">Checking...</div></div></div>
+            <div class="reminder-item blue"><i class="fas fa-calendar-xmark"></i><div><div class="rt">Pending Leave</div><div class="rs" id="dash-pendingLeave">Checking...</div></div></div>
+            <div class="reminder-item green" id="dash-probationAlert" style="display:none"><i class="fas fa-user-clock"></i><div><div class="rt">Probation Ending</div><div class="rs" id="dash-probationText"></div></div></div>
+          </div>
+        </div>
+        <div class="table-card" style="margin-bottom:0">
+          <div class="table-header"><h3><i class="fas fa-clock-rotate-left"></i> Recent Activity</h3><span class="badge badge-green"><span class="online-dot pulse"></span>&nbsp;Live</span></div>
+          <div class="table-wrapper">
+            <table><thead><tr><th>Time</th><th>Activity</th><th>User</th><th>Module</th></tr></thead><tbody id="dashActivityBody"><tr><td colspan="4" class="table-empty">No activity</td></tr></tbody></table>
+          </div>
+        </div>
       </div>
-      <div class="nav-section">
-        <div class="nav-section-title">Analytics & Teams</div>
-        <div class="nav-link" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i> Analytics</div>
-        <div class="nav-link" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i> Teams</div>
-        <div class="nav-link" onclick="showMaintenance('Tasks','Coming soon!')"><i class="fas fa-list-check"></i> Tasks <span class="nav-soon">Soon</span></div>
-        <div class="nav-link" onclick="showMaintenance('Announcements','Coming soon!')"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-soon">Soon</span></div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-title">Reports</div>
-        <div class="nav-link" onclick="showMaintenance('MIS Reports','Coming soon!')"><i class="fas fa-file-chart-column"></i> MIS Reports <span class="nav-soon">Soon</span></div>
-        <div class="nav-link" onclick="showMaintenance('Performance','Coming soon!')"><i class="fas fa-star"></i> Performance <span class="nav-soon">Soon</span></div>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-title">System</div>
-        <div class="nav-link" onclick="navigateTo('settings')"><i class="fas fa-sliders"></i> Settings</div>
-        <div class="nav-link" onclick="navigateTo('profile')"><i class="fas fa-user-circle"></i> My Profile</div>
-        <div class="nav-link" onclick="Auth.logout()" style="color:var(--danger)"><i class="fas fa-right-from-bracket"></i> Logout</div>
+
+      <div class="app-footer">
+        <div class="credit-text">House of Panchhi HR Pro · <span class="rainbow-text">Crafted with ❤️ by Aditya Tomar</span></div>
       </div>
     </div>
-    <div class="sidebar-footer">
-      <div class="user-avatar" id="sidebarAvatar">AT</div>
-      <div class="user-info">
-        <h4 id="sidebarName">Aditya Tomar</h4>
-        <span><span class="online-dot"></span> <span id="sidebarRole">Super Admin</span></span>
-      </div>
-    </div>
-  </nav>
 
-  <!-- MAIN -->
-  <div class="main-content">
-    <header class="top-header">
-      <div class="header-left">
-        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <div class="page-title">
-          <h1 id="pageTitle">Dashboard</h1>
-          <p id="pageSubtitle">Overview & quick actions</p>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="header-clock"><i class="fas fa-clock"></i><span id="liveClock"></span></div>
-        <div class="header-avatar" id="headerAvatar" onclick="navigateTo('profile')">AT</div>
-      </div>
-    </header>
-
-    <div class="page-content">
-
-      <!-- ══ DASHBOARD ══ -->
-      <div class="page active" id="page-dashboard">
-
-        <!-- Greeting -->
-        <div style="margin-bottom:20px;">
-          <h2 id="greetingText" style="font-size:20px;font-weight:800;color:var(--gray-900)">Good Morning! 👋</h2>
-          <p id="greetingDate" style="font-size:13px;color:var(--gray-400);margin-top:3px"></p>
-        </div>
-
-        <!-- Birthday Alert -->
-        <div id="birthdaySection" style="display:none;margin-bottom:20px;"></div>
-
-        <!-- Probation Alert -->
-        <div id="probationAlert" style="display:none;margin-bottom:16px;">
-          <div class="alert alert-warning">
-            <i class="fas fa-user-clock"></i>
-            <div><strong>Probation Ending Soon</strong> — <span id="probationText"></span></div>
-          </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="stat-cards">
-          <div class="stat-card rose"><div class="stat-icon rose"><i class="fas fa-users"></i></div><div class="stat-number" id="ds-totalEmp">—</div><div class="stat-label">Active Employees</div></div>
-          <div class="stat-card green"><div class="stat-icon green"><i class="fas fa-user-check"></i></div><div class="stat-number" id="ds-presentToday">—</div><div class="stat-label">Present Today</div></div>
-          <div class="stat-card red"><div class="stat-icon red"><i class="fas fa-user-xmark"></i></div><div class="stat-number" id="ds-absentToday">—</div><div class="stat-label">Absent Today</div></div>
-          <div class="stat-card amber"><div class="stat-icon amber"><i class="fas fa-door-open"></i></div><div class="stat-number" id="ds-onGatepass">—</div><div class="stat-label">On Gate Pass</div></div>
-          <div class="stat-card blue"><div class="stat-icon blue"><i class="fas fa-money-bill-wave"></i></div><div class="stat-number" id="ds-payroll">—</div><div class="stat-label">Payroll This Month</div></div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="section-title"><i class="fas fa-bolt"></i> Quick Actions</div>
-        <div class="quick-grid">
-          <div class="quick-btn" onclick="window.location='employees.html'"><i class="fas fa-user-plus"></i><span>Add Employee</span></div>
-          <div class="quick-btn" onclick="window.location='attendance.html'"><i class="fas fa-clipboard-check"></i><span>Attendance</span></div>
-          <div class="quick-btn" onclick="window.location='gatepass.html'"><i class="fas fa-passport"></i><span>Gate Pass</span></div>
-          <div class="quick-btn" onclick="window.location='leave.html'"><i class="fas fa-calendar-days"></i><span>Leave</span></div>
-          <div class="quick-btn" onclick="window.location='salary.html'"><i class="fas fa-calculator"></i><span>Payroll</span></div>
-          <div class="quick-btn" onclick="window.location='store.html'"><i class="fas fa-box"></i><span>Store Entry</span></div>
-          <div class="quick-btn" onclick="window.location='teams.html'"><i class="fas fa-people-group"></i><span>Teams</span></div>
-          <div class="quick-btn" onclick="window.location='analytics.html'"><i class="fas fa-chart-line"></i><span>Analytics</span></div>
-        </div>
-
-        <!-- Charts -->
-        <div class="dashboard-grid">
-          <div class="chart-card">
-            <h3><i class="fas fa-chart-bar"></i> Monthly Attendance (Last 6 Months)</h3>
-            <div class="bar-chart" id="dashBarChart">
-              <div style="width:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-300)">
-                <i class="fas fa-spinner spin" style="font-size:24px"></i>
-              </div>
-            </div>
-          </div>
-          <div class="chart-card">
-            <h3><i class="fas fa-chart-pie"></i> Department Split</h3>
-            <div class="donut-wrap">
-              <div class="donut" id="dashDonut" style="background:var(--gray-200)">
-                <div class="donut-center"><div class="dn" id="dashDonutNum">—</div><div class="dl">Total</div></div>
-              </div>
-              <ul class="donut-legend" id="dashDonutLegend">
-                <li><div class="skeleton" style="width:100px;height:12px;border-radius:4px"></div></li>
-                <li><div class="skeleton" style="width:80px;height:12px;border-radius:4px"></div></li>
-                <li><div class="skeleton" style="width:90px;height:12px;border-radius:4px"></div></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Reminders + Activity -->
-        <div class="grid-1-2">
-          <div class="reminder-card">
-            <h3><i class="fas fa-bell" style="color:var(--warning)"></i> Reminders & Alerts</h3>
-            <div id="remindersBox">
-              <div class="reminder-item amber">
-                <i class="fas fa-spinner spin"></i>
-                <div><div class="rt">Loading reminders...</div></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-card" style="margin-bottom:0">
-            <div class="table-header">
-              <h3><i class="fas fa-clock-rotate-left"></i> Recent Activity</h3>
-              <span class="badge badge-green"><span class="online-dot pulse"></span>&nbsp;Live</span>
-            </div>
-            <div class="table-wrapper">
-              <table>
-                <thead><tr><th>Time</th><th>Module</th><th>Action</th><th>Details</th></tr></thead>
-                <tbody id="dashActivityBody">
-                  <tr><td colspan="4" class="table-empty"><i class="fas fa-spinner spin"></i><p>Loading...</p></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div style="text-align:center;padding:16px;margin-top:12px;border-top:1px solid var(--gray-100)">
-          <span style="font-size:12px;color:var(--gray-400);font-weight:600">House of Panchhi HR &nbsp;·&nbsp; </span>
-          <span class="credit-name">Crafted with ❤️ by Aditya Tomar</span>
-        </div>
-      </div>
-
-      <!-- ══ SETTINGS ══ -->
-      <div class="page" id="page-settings">
-        <div class="grid-2">
-          <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-sliders"></i> Payroll Rules</div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>3-Hour Grace (Senior Staff)</h4><p>3 hrs deduction free per month</p></div>
-              <label class="toggle-switch"><input type="checkbox" id="tog-grace" checked><span class="toggle-slider"></span></label>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>31-Day Bonus (Stitching / Embroidery)</h4><p>Full attendance = 31 days salary</p></div>
-              <label class="toggle-switch"><input type="checkbox" id="tog-bonus" checked><span class="toggle-slider"></span></label>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>PF Deduction</h4><p>Enable when applicable</p></div>
-              <label class="toggle-switch"><input type="checkbox" id="tog-pf"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-building"></i> Company Configuration</div>
-            <div class="form-group mb-16"><label>Company Name</label><input type="text" id="cfg-company" value="House of Panchhi"></div>
-            <div class="form-group mb-16"><label>Default Working Days / Month</label><input type="number" id="cfg-workdays" value="26" min="20" max="31"></div>
-            <div class="form-group mb-16"><label>Max Advance % of Salary</label><input type="number" id="cfg-maxadv" value="50"></div>
-            <div class="form-group mb-16"><label>PL Per Year</label><input type="number" id="cfg-pl" value="12"></div>
-            <div class="form-group mb-16"><label>SL Per Year</label><input type="number" id="cfg-sl" value="3"></div>
-            <button class="btn btn-primary btn-full" onclick="saveSettingsPage()"><i class="fas fa-save"></i> Save Configuration</button>
-          </div>
-        </div>
-        <!-- User Management -->
-        <div class="form-card" id="userMgmtCard">
-          <div class="form-card-title"><i class="fas fa-users-gear"></i> User Management</div>
-          <div id="usersList" style="margin-bottom:16px"></div>
-          <button class="btn btn-primary btn-sm" onclick="openAddUser()"><i class="fas fa-user-plus"></i> Add New User</button>
-        </div>
-      </div>
-
-      <!-- ══ PROFILE ══ -->
-      <div class="page" id="page-profile">
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="grid-2">
         <div class="form-card">
-          <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--gray-100);flex-wrap:wrap;">
-            <div id="profileAvatarLg" style="width:80px;height:80px;background:linear-gradient(135deg,var(--primary),#a21caf);border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;flex-shrink:0;">AT</div>
-            <div>
-              <h2 id="profileDisplayName" style="font-size:20px;font-weight:800;color:var(--gray-900)">Aditya Tomar</h2>
-              <p style="font-size:13px;color:var(--gray-400);margin-top:2px">House of Panchhi HR</p>
-              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-                <span id="profileRoleBadge" class="role-super">Super Admin</span>
-                <span class="badge badge-green"><span class="online-dot"></span> Online</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-grid form-grid-2">
-            <div class="form-group"><label>Full Name</label><input type="text" id="profileName" oninput="updateProfileDisplay()"></div>
-            <div class="form-group"><label>Role</label><input type="text" id="profileRoleDisplay" disabled></div>
-            <div class="form-group"><label>Email</label><input type="email" id="profileEmail"></div>
-            <div class="form-group"><label>Username</label><input type="text" id="profileUsername" disabled></div>
-          </div>
-          <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--gray-100)">
-            <h3 style="font-size:14px;font-weight:800;color:var(--gray-900);margin-bottom:14px"><i class="fas fa-lock" style="color:var(--primary);margin-right:6px"></i> Change Password</h3>
-            <div class="form-grid form-grid-2">
-              <div class="form-group"><label>Current Password</label><input type="password" id="curPass" placeholder="Current password"></div>
-              <div class="form-group"><label>New Password</label><input type="password" id="newPass" placeholder="New password"></div>
-            </div>
-          </div>
-          <div class="btn-group mt-16">
-            <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
-            <button class="btn btn-danger" onclick="Auth.logout()"><i class="fas fa-right-from-bracket"></i> Logout</button>
-          </div>
+          <div class="form-card-title"><i class="fas fa-scale-balanced"></i> Payroll Rules</div>
+          <div class="toggle-row"><div class="toggle-info"><h4>PF Deduction</h4><p>Enable when applicable</p></div><label class="toggle-switch"><input type="checkbox" id="rulePF"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>ESIC Deduction</h4><p>Enable when applicable</p></div><label class="toggle-switch"><input type="checkbox" id="ruleESIC"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>3-Hour Grace</h4><p>3 hrs free per month for senior staff</p></div><label class="toggle-switch"><input type="checkbox" id="ruleGrace" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>31-Day Bonus</h4><p>Full month = 31 days salary</p></div><label class="toggle-switch"><input type="checkbox" id="ruleBonus" checked><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="form-card">
+          <div class="form-card-title"><i class="fas fa-building"></i> Configuration</div>
+          <div class="form-group mb-16"><label>Company Name</label><input type="text" id="cfgCompany" value="House of Panchhi"></div>
+          <div class="form-group mb-16"><label>Working Hours / Day</label><input type="number" id="cfgHours" value="9"></div>
+          <div class="form-group mb-16"><label>Max Advance %</label><input type="number" id="cfgAdvance" value="50"></div>
+          <div class="form-group mb-16"><label>PL per Year</label><input type="number" id="cfgPL" value="12"></div>
+          <div class="form-group mb-16"><label>SL per Year</label><input type="number" id="cfgSL" value="3"></div>
+          <div class="form-group mb-16"><label>Apps Script Web App URL</label><input type="url" id="cfgWebApp" placeholder="https://script.google.com/..."></div>
+          <button class="btn btn-primary btn-full" onclick="saveSettings()"><i class="fas fa-save"></i> Save Configuration</button>
         </div>
       </div>
+    </div>
 
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="form-card">
+        <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--gray-100);flex-wrap:wrap">
+          <div id="profileAvatarLg" style="width:90px;height:90px;border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:800;cursor:pointer;position:relative;background:var(--primary)" onclick="document.getElementById('profilePhotoInput').click()">
+            U
+            <div style="position:absolute;bottom:-4px;right:-4px;background:var(--primary);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff"><i class="fas fa-camera" style="font-size:10px;color:#fff"></i></div>
+          </div>
+          <input type="file" id="profilePhotoInput" accept="image/*" style="display:none" onchange="handleProfilePhoto(this)">
+          <div>
+            <h2 id="profileDisplayName" style="font-size:20px;font-weight:800;color:var(--gray-900)">User</h2>
+            <p style="font-size:13px;color:var(--gray-500);margin-top:2px"><span class="badge-role">Role</span> · House of Panchhi HR</p>
+            <div style="display:flex;gap:8px;margin-top:8px"><span class="badge badge-purple"><i class="fas fa-crown" style="font-size:9px"></i> <span class="badge-role">Role</span></span><span class="badge badge-green"><span class="online-dot"></span> Online</span></div>
+          </div>
+        </div>
+        <div class="form-grid form-grid-2">
+          <div class="form-group"><label>Full Name</label><input type="text" id="profileName" onchange="updateProfileName()"></div>
+          <div class="form-group"><label>Role</label><input type="text" id="profileRole" disabled></div>
+          <div class="form-group"><label>Email</label><input type="email" id="profileEmail" disabled></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="profilePhone" placeholder="+91 XXXXX XXXXX"></div>
+        </div>
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--gray-100)">
+          <h3 style="font-size:14px;font-weight:800;color:var(--gray-900);margin-bottom:16px"><i class="fas fa-lock" style="color:var(--primary);margin-right:6px"></i> Change Password</h3>
+          <div class="form-grid form-grid-2">
+            <div class="form-group"><label>Current Password</label><input type="password" id="currentPass" placeholder="Current password"></div>
+            <div class="form-group"><label>New Password</label><input type="password" id="newPass" placeholder="New password"></div>
+          </div>
+        </div>
+        <div class="btn-group mt-16">
+          <button class="btn btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Save Profile</button>
+          <button class="btn btn-outline" onclick="changePassword()"><i class="fas fa-key"></i> Update Password</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- ADD USER MODAL -->
-<div class="modal-overlay" id="modal-addUser">
-  <div class="modal-box modal-box-sm">
-    <div class="modal-header">
-      <h3><i class="fas fa-user-plus" style="color:var(--primary);margin-right:8px"></i>Add / Edit User</h3>
-      <button class="modal-close" onclick="closeModal('addUser')"><i class="fas fa-xmark"></i></button>
-    </div>
-    <div class="form-group mb-16"><label>Username *</label><input type="text" id="u_username" placeholder="e.g. hr1"></div>
-    <div class="form-group mb-16"><label>Full Name *</label><input type="text" id="u_name" placeholder="Employee full name"></div>
-    <div class="form-group mb-16"><label>Password *</label><input type="password" id="u_password" placeholder="Set password"></div>
-    <div class="form-group mb-16">
-      <label>Role *</label>
-      <select id="u_role">
-        <option value="HR_EXEC">HR Executive</option>
-        <option value="DIRECTOR">Director (View Only)</option>
-        <option value="STORE_MGR">Store Manager</option>
-        <option value="SUPER_ADMIN">Super Admin</option>
-      </select>
-    </div>
-    <div class="form-group mb-16"><label>Email</label><input type="email" id="u_email" placeholder="user@email.com"></div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('addUser')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveNewUser()"><i class="fas fa-save"></i> Save User</button>
-    </div>
-  </div>
 </div>
 
 <!-- MAINTENANCE MODAL -->
 <div class="maintenance-overlay" id="maintenanceModal">
   <div class="maintenance-box">
-    <div style="font-size:52px;margin-bottom:16px">🚧</div>
-    <div class="maintenance-badge"><i class="fas fa-hard-hat"></i>&nbsp;Under Construction</div>
-    <h3 style="font-size:20px;font-weight:800;color:var(--gray-900);margin-bottom:8px" id="maintenanceTitle">Coming Soon</h3>
-    <p style="font-size:13.5px;color:var(--gray-500);line-height:1.7;margin-bottom:24px" id="maintenanceDesc">Being developed.</p>
-    <button class="btn btn-primary" onclick="document.getElementById('maintenanceModal').classList.remove('show')" style="margin:0 auto">
-      <i class="fas fa-thumbs-up"></i>&nbsp;Got it!
-    </button>
+    <span class="maintenance-icon">🚧</span>
+    <div class="maintenance-badge"><i class="fas fa-hard-hat"></i> Under Construction</div>
+    <h3 id="maintenanceTitle">Coming Soon</h3>
+    <p id="maintenanceDesc">This module is being developed.</p>
+    <button class="btn btn-primary" onclick="closeMaintenance()" style="margin:0 auto"><i class="fas fa-thumbs-up"></i> Got it!</button>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-box modal-box-sm modal-confirm">
+    <div class="modal-confirm-icon red"><i class="fas fa-trash-alt"></i></div>
+    <h3>Are you sure?</h3>
+    <p>This action cannot be undone.</p>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn btn-outline" onclick="closeModal('confirm')">Cancel</button>
+      <button class="btn btn-danger btn-confirm-ok">Yes, Proceed</button>
+    </div>
   </div>
 </div>
 
 <script src="assets/js/app.js"></script>
 <script>
-/* ══════════════════════════════════════
-   LOGIN
-══════════════════════════════════════ */
-async function doLogin() {
-  const username = document.getElementById('loginUser').value.trim();
-  const password = document.getElementById('loginPass').value.trim();
-  const btn      = document.getElementById('loginBtn');
-  const errEl    = document.getElementById('loginError');
-
-  if (!username || !password) {
-    errEl.textContent = 'Please enter username and password'; errEl.style.display='block'; return;
-  }
-  errEl.style.display = 'none';
-  btn.innerHTML = '<i class="fas fa-spinner spin"></i>&nbsp; Signing in...';
-  btn.disabled  = true;
-
-  const result = await Auth.login(username, password);
-  if (result.success) {
-    document.getElementById('loginOverlay').classList.add('hidden');
-    document.getElementById('appWrapper').classList.add('active');
-    loadProfileInSidebar();
-    initDashboard();
-    // Show role-based UI
-    applyRoleAccess();
-  } else {
-    errEl.textContent = result.error || 'Login failed. Check username and password.';
-    errEl.style.display = 'block';
-    btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In';
-    btn.disabled  = false;
-  }
-}
-
-/* Enter key support */
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('loginPass')?.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-  document.getElementById('loginUser')?.addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass')?.focus(); });
-
-  // Check existing session
-  if (Auth.getUser()) {
-    document.getElementById('loginOverlay').classList.add('hidden');
-    document.getElementById('appWrapper').classList.add('active');
-    loadProfileInSidebar();
-    initDashboard();
-    applyRoleAccess();
-  }
-});
-
-/* ── Role-based UI ── */
-function applyRoleAccess() {
-  const user = Auth.getUser();
-  if (!user) return;
-  if (user.role === 'DIRECTOR') {
-    // Director sees everything but can't edit
-    document.querySelectorAll('.btn-primary, .btn-danger, .btn-success').forEach(b => {
-      if (!b.closest('.login-card')) b.style.display = 'none';
-    });
-  }
-  if (user.role === 'STORE_MGR') {
-    // Store manager sees only store-related items
-  }
-  // Hide User Management from non-super-admin
-  if (user.role !== 'SUPER_ADMIN') {
-    document.getElementById('userMgmtCard')?.remove();
-  }
-}
-
-/* ══════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════ */
 function navigateTo(pageId) {
+  if (!Auth.hasAccess(pageId)) { showToast('error','Access Denied','No permission'); return; }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  const page = document.getElementById('page-' + pageId);
-  if (page) page.classList.add('active');
-  const titles = {
-    dashboard : { h:'Dashboard',    s:'Overview & quick actions' },
-    settings  : { h:'Settings',     s:'Configure system rules' },
-    profile   : { h:'My Profile',   s:'Account & preferences' },
-  };
-  const t = titles[pageId] || { h: pageId, s: '' };
-  document.getElementById('pageTitle').textContent    = t.h;
-  document.getElementById('pageSubtitle').textContent = t.s;
+  const page = document.getElementById('page-' + pageId); if (page) page.classList.add('active');
+  const link = document.querySelector(`.nav-link[data-page="${pageId}"]`); if (link) link.classList.add('active');
+  App.currentPage = pageId;
+  const titles = { dashboard: ['Dashboard','Overview & quick actions'], settings: ['Settings','Configure system rules'], profile: ['My Profile','Account settings'] };
+  document.getElementById('pageTitle').textContent = titles[pageId]?.[0] || pageId;
+  document.getElementById('pageSubtitle').textContent = titles[pageId]?.[1] || '';
   if (window.innerWidth <= 768) closeSidebar();
-  if (pageId === 'settings') loadUsersTable();
-  if (pageId === 'profile')  loadProfilePage();
+  window.location.hash = pageId;
 }
 
-/* ══════════════════════════════════════
-   DASHBOARD INIT
-══════════════════════════════════════ */
-async function initDashboard() {
-  updateClock(); setInterval(updateClock, 1000);
+function showMaintenance(title, desc) {
+  document.getElementById('maintenanceTitle').textContent = title;
+  document.getElementById('maintenanceDesc').textContent = desc;
+  document.getElementById('maintenanceModal').classList.add('show');
+}
+function closeMaintenance() { document.getElementById('maintenanceModal').classList.remove('show'); }
 
-  // Fetch all dashboard data in one call
-  const stats = await fetchDashboard();
-  if (!stats) return;
-
-  renderDashboardStats(stats);
-  renderBirthdays(stats.birthdays || []);
-  renderProbation(stats.probationSoon || []);
-  renderReminders(stats);
-  renderDonut(stats);
-  await renderBarChart();
-  renderActivity();
-
-  // Auto-refresh every 5 minutes
-  setInterval(async () => {
-    const s = await fetchDashboard();
-    if (s) { renderDashboardStats(s); renderBirthdays(s.birthdays||[]); renderReminders(s); }
-  }, 5 * 60 * 1000);
+function handleHash() {
+  const hash = window.location.hash.replace('#','');
+  if (hash && ['dashboard','settings','profile'].includes(hash) && Auth.hasAccess(hash)) navigateTo(hash);
 }
 
-async function fetchDashboard() {
+let employees = [], attendance = [], gatepasses = [], leaveRecords = [], salaryRecords = [], storeEntries = [], departments = [], activityLogs = [];
+
+async function syncAll() {
+  const btn = document.querySelector('.header-icon-btn[title="Refresh"]');
+  if (btn) btn.innerHTML = '<i class="fas fa-spinner spin"></i>';
   try {
-    const url = GSheet.WEB_APP_URL + '?sheet=Dashboard';
-    const res  = await fetch(url, { redirect: 'follow' });
-    const json = await res.json();
-    return json.success ? json.data : null;
+    [employees, attendance, gatepasses, leaveRecords, salaryRecords, storeEntries, departments, activityLogs] = await Promise.all([
+      GSheet.read('Employees'), GSheet.read('Attendance'), GSheet.read('GatePass'),
+      GSheet.read('Leave'), GSheet.read('Salary'), GSheet.read('Store'),
+      GSheet.read('Departments'), GSheet.read('ActivityLog', 50)
+    ]);
+    App.lastSync = new Date();
+    renderDashboard();
+    showToast('success','Synced','All data refreshed from Google Sheets');
   } catch (e) {
-    console.error('Dashboard fetch error:', e);
-    return null;
+    showToast('error','Sync Failed',e.message);
   }
+  if (btn) setTimeout(() => btn.innerHTML = '<i class="fas fa-rotate"></i>', 800);
 }
 
-function renderDashboardStats(s) {
-  document.getElementById('ds-totalEmp').textContent    = s.activeEmp     ?? 0;
-  document.getElementById('ds-presentToday').textContent= s.presentToday  ?? 0;
-  document.getElementById('ds-absentToday').textContent = s.absentToday   ?? 0;
-  document.getElementById('ds-onGatepass').textContent  = s.onGatePass    ?? 0;
-  document.getElementById('ds-payroll').textContent     = s.netPayroll > 0 ? formatINR(s.netPayroll) : '—';
+function renderDashboard() {
+  const active = employees.filter(e => (e.Status || 'ACTIVE') === 'ACTIVE');
+  document.getElementById('ds-totalEmp').textContent = active.length;
+  const today = todayStr();
+  const att = attendance.filter(r => r.Date === today);
+  document.getElementById('ds-presentToday').textContent = att.filter(r => r.Status === 'P' || r.Status === 'L').length;
+  document.getElementById('ds-absentToday').textContent = att.filter(r => r.Status === 'A').length;
+  document.getElementById('ds-onGatepass').textContent = gatepasses.filter(g => g.Date === today && g.Status === 'OUT').length;
+  const month = today.slice(0,7);
+  const sal = salaryRecords.filter(r => r.Month === month);
+  const net = sal.reduce((s, r) => s + (Number(r['Net Salary']) || 0), 0);
+  document.getElementById('ds-payroll').textContent = formatINR(net);
+
+  document.getElementById('dash-poCount').textContent = storeEntries.filter(e => e['PO Status'] === 'PENDING' || (!e['PO No'] || !e['PR No'])).length + ' pending';
+  document.getElementById('dash-lateCount').textContent = att.filter(r => r.Status === 'L').length + ' late today';
+  document.getElementById('dash-pendingLeave').textContent = leaveRecords.filter(r => r.Status === 'PENDING').length + ' requests';
+
+  checkBirthdays(active);
+  checkProbation(active);
+  buildBarChart();
+  buildDonutChart(active);
+  buildActivityLog();
 }
 
-function renderBirthdays(birthdays) {
+function checkBirthdays(emps) {
+  const today = new Date(); const md = `${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const bdays = emps.filter(e => e.DOB && String(e.DOB).slice(5) === md);
   const sec = document.getElementById('birthdaySection');
-  if (!birthdays.length) { sec.style.display = 'none'; return; }
+  if (!bdays.length) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
-  sec.innerHTML = birthdays.map(b => `
-    <div class="birthday-card">
-      <i class="fas fa-birthday-cake"></i>
-      <div>
-        <div class="bname">🎂 Happy Birthday, ${b.name}!</div>
-        <div class="bdept">${b.dept || ''} · ${b.ecode || ''}</div>
-      </div>
-    </div>`).join('');
+  sec.innerHTML = bdays.map(e => `<div class="birthday-card"><i class="fas fa-birthday-cake"></i><div><div class="bname">🎂 Happy Birthday, ${e['Full Name']}!</div><div class="bdept">${e.Department || ''} · ${e['E-Code']}</div></div></div>`).join('');
 }
 
-function renderProbation(soon) {
-  const el  = document.getElementById('probationAlert');
-  const txt = document.getElementById('probationText');
-  if (!soon.length) { el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  txt.textContent  = `${soon.length} employee(s) confirmation date within 7 days: ${soon.map(p => p.name).join(', ')}`;
-}
-
-function renderReminders(s) {
-  const box = document.getElementById('remindersBox');
-  const items = [
-    { color:'amber', icon:'fas fa-exclamation-circle', title:'PO / PR Numbers Pending',
-      sub: s.pendingPO > 0 ? `${s.pendingPO} store entries missing PO/PR` : 'All entries complete ✓' },
-    { color: s.lateToday > 0 ? 'red':'green', icon:'fas fa-user-clock', title:'Late Coming — Today',
-      sub: s.lateToday > 0 ? `${s.lateToday} employee(s) came late` : 'No late arrivals today ✓' },
-    { color: s.pendingLeaves > 0 ? 'blue':'green', icon:'fas fa-calendar-xmark', title:'Leave Requests Pending',
-      sub: s.pendingLeaves > 0 ? `${s.pendingLeaves} request(s) awaiting approval` : 'No pending leave requests ✓' },
-    { color: s.absentToday > 0 ? 'red':'green', icon:'fas fa-user-xmark', title:'Absent Today',
-      sub: s.absentToday > 0 ? `${s.absentToday} employee(s) absent` : 'Full attendance today ✓' },
-  ];
-  box.innerHTML = items.map(it => `
-    <div class="reminder-item ${it.color}">
-      <i class="${it.icon}"></i>
-      <div><div class="rt">${it.title}</div><div class="rs">${it.sub}</div></div>
-    </div>`).join('');
-}
-
-/* ── Donut chart ── */
-async function renderDonut(stats) {
-  const emps   = await GSheet.read('Employees');
-  const active = emps.filter(e => e.status === 'ACTIVE');
-  const donut  = document.getElementById('dashDonut');
-  const legend = document.getElementById('dashDonutLegend');
-  const numEl  = document.getElementById('dashDonutNum');
-  if (numEl) numEl.textContent = active.length;
-  const deptCounts = {};
-  active.forEach(e => { deptCounts[e.department] = (deptCounts[e.department] || 0) + 1; });
-  const sorted = Object.entries(deptCounts).sort((a,b) => b[1]-a[1]).slice(0,5);
-  const total  = active.length || 1;
-  if (!sorted.length) { donut.style.background='var(--gray-200)'; legend.innerHTML='<li style="color:var(--gray-400);font-size:12px">No employees yet</li>'; return; }
-  const COLORS = ['#be185d','#7e22ce','#0284c7','#059669','#d97706'];
-  let conic = '', start = 0;
-  legend.innerHTML = '';
-  sorted.forEach(([dept, count], i) => {
-    const pct = Math.round(count / total * 100);
-    conic += `${COLORS[i]} ${start}% ${start+pct}%,`;
-    start += pct;
-    const li = document.createElement('li');
-    li.innerHTML = `<span style="background:${COLORS[i]}"></span>${dept} (${count})`;
-    legend.appendChild(li);
+function checkProbation(emps) {
+  const today = new Date();
+  const soon = emps.filter(e => {
+    if (!e['Confirmation Date']) return false;
+    const d = new Date(e['Confirmation Date']);
+    const diff = Math.round((d - today) / (1000*60*60*24));
+    return diff >= 0 && diff <= 7;
   });
-  if (start < 100) conic += `var(--gray-200) ${start}% 100%`; else conic = conic.slice(0,-1);
+  const el = document.getElementById('dash-probationAlert');
+  if (soon.length) { el.style.display = 'flex'; document.getElementById('dash-probationText').textContent = soon.length + ' employee(s) confirmation approaching'; }
+}
+
+function buildBarChart() {
+  const chart = document.getElementById('dashBarChart'); if (!chart) return;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const now = new Date();
+  const data = Array.from({length:6}, (_,i) => {
+    const m = months[(now.getMonth()-5+i+12)%12];
+    const recs = attendance.filter(r => r.Date && r.Date.slice(5,7) === String((now.getMonth()-5+i+12)%12+1).padStart(2,'0'));
+    const total = recs.length || 1;
+    const present = recs.filter(r => r.Status === 'P' || r.Status === 'L').length;
+    return { label: m, val: Math.round(present/total*100) || 0 };
+  });
+  const colors = ['#6c47ff','#a855f7','#6c47ff','#a855f7','#6c47ff','#a855f7'];
+  chart.innerHTML = '';
+  const max = Math.max(...data.map(d=>d.val), 1);
+  data.forEach((d,i) => {
+    const wrap = document.createElement('div'); wrap.className='bar-wrap';
+    const bar = document.createElement('div'); bar.className='bar'; bar.style.background = colors[i]; bar.style.height='0%';
+    bar.innerHTML = `<span class="bar-val">${d.val}%</span>`;
+    const lbl = document.createElement('div'); lbl.className='bar-label'; lbl.textContent=d.label;
+    wrap.appendChild(bar); wrap.appendChild(lbl); chart.appendChild(wrap);
+    setTimeout(() => bar.style.height = Math.round(d.val/max*100)+'%', 100+i*80);
+  });
+}
+
+function buildDonutChart(emps) {
+  const donut = document.getElementById('dashDonut'); const legend = document.getElementById('dashDonutLegend'); const num = document.getElementById('dashDonutNum');
+  if (!donut) return;
+  num.textContent = emps.length;
+  const counts = {};
+  emps.forEach(e => { counts[e.Department] = (counts[e.Department] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const total = emps.length || 1;
+  if (!sorted.length) { donut.style.background='var(--gray-200)'; legend.innerHTML='<li style="color:var(--gray-400)">No employees</li>'; return; }
+  const COLORS = ['#6c47ff','#10b981','#f59e0b','#3b82f6','#ef4444'];
+  let conic='', start=0; legend.innerHTML='';
+  sorted.forEach(([dept,count],i) => {
+    const pct = Math.round(count/total*100);
+    conic += `${COLORS[i]} ${start}% ${start+pct}%,`; start += pct;
+    const li = document.createElement('li'); li.innerHTML = `<span style="background:${COLORS[i]}"></span>${dept} (${pct}%)`; legend.appendChild(li);
+  });
+  if (start<100) conic += `var(--gray-200) ${start}% 100%`; else conic = conic.slice(0,-1);
   donut.style.background = `conic-gradient(${conic})`;
 }
 
-/* ── Bar chart (real attendance %) ── */
-async function renderBarChart() {
-  const chart  = document.getElementById('dashBarChart');
-  const months = [];
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(); d.setMonth(d.getMonth() - i);
-    months.push(d.toISOString().slice(0,7));
-  }
-  const COLORS = ['#be185d','#a21caf','#7e22ce','#be185d','#a21caf','#7e22ce'];
-  chart.innerHTML = '';
-
-  // Fetch attendance for all 6 months in parallel
-  const attArrays = await Promise.all(months.map(m => GSheet.read('Attendance', 'month:' + m)));
-  const emps      = await GSheet.read('Employees');
-  const activeCount = emps.filter(e => e.status === 'ACTIVE').length || 1;
-
-  const data = months.map((m, i) => {
-    const att     = attArrays[i] || [];
-    const days    = [...new Set(att.map(r => r.date))].length || 1;
-    const present = att.filter(r => r.status === 'P' || r.status === 'L').length;
-    const pct     = att.length ? Math.round(present / att.length * 100) : 0;
-    const d       = new Date(m + '-01');
-    return { label: d.toLocaleDateString('en-IN', { month:'short' }), val: pct };
-  });
-
-  const max = Math.max(...data.map(d => d.val), 1);
-  data.forEach((d, i) => {
-    const wrap = document.createElement('div'); wrap.className = 'bar-wrap';
-    const bar  = document.createElement('div'); bar.className  = 'bar';
-    bar.style.cssText = `background:${COLORS[i]};height:0%`;
-    bar.innerHTML     = `<span class="bar-val">${d.val}%</span>`;
-    const lbl  = document.createElement('div'); lbl.className  = 'bar-label'; lbl.textContent = d.label;
-    wrap.appendChild(bar); wrap.appendChild(lbl); chart.appendChild(wrap);
-    setTimeout(() => { bar.style.height = Math.round(d.val / max * 100) + '%'; }, 200 + i * 80);
-  });
+function buildActivityLog() {
+  const body = document.getElementById('dashActivityBody'); if (!body) return;
+  if (!activityLogs.length) { body.innerHTML = '<tr><td colspan="4" class="table-empty">No activity yet</td></tr>'; return; }
+  body.innerHTML = activityLogs.slice(0,10).map(a => `<tr><td class="activity-time">${a.Timestamp}</td><td>${a.Action}</td><td style="font-weight:600">${a.User}</td><td><span class="badge badge-purple">${a.Module}</span></td></tr>`).join('');
 }
 
-/* ── Activity log ── */
-async function renderActivity() {
-  const body = document.getElementById('dashActivityBody');
-  const acts = await GSheet.read('Activity', '');
-  if (!acts.length) {
-    body.innerHTML = `<tr><td colspan="4" class="table-empty"><i class="fas fa-inbox"></i><p>No activity yet</p></td></tr>`;
-    return;
-  }
-  body.innerHTML = '';
-  acts.slice(0, 10).forEach(a => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="activity-time">${a.timestamp || '—'}</td>
-      <td><span class="badge badge-rose" style="font-size:10px">${a.module || ''}</span></td>
-      <td style="font-size:12.5px;font-weight:600">${a.action || ''}</td>
-      <td style="font-size:12px;color:var(--gray-500)">${a.details || ''}</td>`;
-    body.appendChild(tr);
-  });
-}
-
-/* ══════════════════════════════════════
-   SETTINGS PAGE
-══════════════════════════════════════ */
-async function saveSettingsPage() {
-  const settings = {
-    companyName    : document.getElementById('cfg-company').value,
-    defaultWorkDays: document.getElementById('cfg-workdays').value,
-    maxAdvancePct  : document.getElementById('cfg-maxadv').value,
-    plPerYear      : document.getElementById('cfg-pl').value,
-    slPerYear      : document.getElementById('cfg-sl').value,
-    graceEnabled   : document.getElementById('tog-grace').checked ? 'YES' : 'NO',
-    bonusEnabled   : document.getElementById('tog-bonus').checked ? 'YES' : 'NO',
-    pfEnabled      : document.getElementById('tog-pf').checked    ? 'YES' : 'NO',
-  };
-  const r = await GSheet.send('Settings_Save', settings);
-  if (r.success) showToast('success','Saved!','Settings updated');
-}
-
-/* ── Users table ── */
-async function loadUsersTable() {
-  if (!Auth.requireRole('SUPER_ADMIN')) return;
-  const ul = document.getElementById('usersList');
-  if (!ul) return;
-  ul.innerHTML = '<div class="skeleton" style="height:40px;border-radius:8px;margin-bottom:8px"></div>'.repeat(3);
-  const users = await GSheet.read('Users');
-  if (!users.length) { ul.innerHTML = '<p style="color:var(--gray-400);font-size:13px">No users found</p>'; return; }
-  ul.innerHTML = `
-    <table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead><tr style="background:var(--gray-50)">
-        <th style="padding:9px 12px;text-align:left;font-size:10.5px;font-weight:800;color:var(--gray-500);text-transform:uppercase">Username</th>
-        <th style="padding:9px 12px;text-align:left;font-size:10.5px;font-weight:800;color:var(--gray-500);text-transform:uppercase">Name</th>
-        <th style="padding:9px 12px;text-align:left;font-size:10.5px;font-weight:800;color:var(--gray-500);text-transform:uppercase">Role</th>
-        <th style="padding:9px 12px;text-align:left;font-size:10.5px;font-weight:800;color:var(--gray-500);text-transform:uppercase">Action</th>
-      </tr></thead>
-      <tbody>${users.map(u => `
-        <tr style="border-top:1px solid var(--gray-100)">
-          <td style="padding:10px 12px;font-family:'JetBrains Mono',monospace;font-weight:700">${u.username}</td>
-          <td style="padding:10px 12px;font-weight:600">${u.name}</td>
-          <td style="padding:10px 12px"><span class="role-${u.role==='SUPER_ADMIN'?'super':u.role==='DIRECTOR'?'director':u.role==='HR_EXEC'?'hr':'store'}">${getRoleLabel(u.role)}</span></td>
-          <td style="padding:10px 12px">
-            ${u.username !== 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.username}')"><i class="fas fa-trash"></i></button>` : '<span style="color:var(--gray-400);font-size:12px">Protected</span>'}
-          </td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
-}
-
-function openAddUser() {
-  ['u_username','u_name','u_password','u_email'].forEach(id => { document.getElementById(id).value = ''; });
-  document.getElementById('u_role').value = 'HR_EXEC';
-  showModal('addUser');
-}
-
-async function saveNewUser() {
-  const u = {
-    username : document.getElementById('u_username').value.trim().toLowerCase(),
-    name     : document.getElementById('u_name').value.trim(),
-    password : document.getElementById('u_password').value.trim(),
-    role     : document.getElementById('u_role').value,
-    email    : document.getElementById('u_email').value.trim(),
-    active   : true,
-  };
-  if (!u.username || !u.name || !u.password) { showToast('error','Required','Username, name and password are required'); return; }
-  const r = await GSheet.send('User_Save', u);
-  if (r.success) {
-    showToast('success','User Created!',`${u.name} (${u.username}) added`);
-    closeModal('addUser');
-    loadUsersTable();
-  }
-}
-
-async function deleteUser(username) {
-  if (!confirm(`Delete user "${username}"?`)) return;
-  const r = await GSheet.send('User_Delete', { username });
-  if (r.success) { showToast('success','Deleted','User removed'); loadUsersTable(); }
-}
-
-/* ══════════════════════════════════════
-   PROFILE PAGE
-══════════════════════════════════════ */
-function loadProfilePage() {
-  const user = Auth.getUser();
-  if (!user) return;
-  document.getElementById('profileName').value        = user.name     || '';
-  document.getElementById('profileEmail').value       = user.email    || '';
-  document.getElementById('profileUsername').value    = user.username || '';
-  document.getElementById('profileRoleDisplay').value = getRoleLabel(user.role);
-  document.getElementById('profileDisplayName').textContent = user.name || '';
-  document.getElementById('profileAvatarLg').textContent    = initials(user.name || '');
-}
-
-function updateProfileDisplay() {
-  const name = document.getElementById('profileName').value.trim();
+function updateProfileName() {
+  const name = document.getElementById('profileName')?.value?.trim() || 'User';
   document.getElementById('profileDisplayName').textContent = name;
-  document.getElementById('profileAvatarLg').textContent    = initials(name);
+  Auth.updateName(name);
+}
+
+async function handleProfilePhoto(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async e => {
+    const base64 = e.target.result.split(',')[1];
+    const res = await uploadBase64ToDrive(base64, file.name, file.type, 'ProfilePhotos');
+    if (res.success) {
+      const url = e.target.result;
+      document.getElementById('profileAvatarLg').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:18px">`;
+      Auth.updatePhoto(url);
+      showToast('success','Photo Updated','Profile picture uploaded');
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 async function saveProfile() {
-  const user    = Auth.getUser();
-  const newName = document.getElementById('profileName').value.trim();
-  const newPass = document.getElementById('newPass').value.trim();
-  const curPass = document.getElementById('curPass').value.trim();
-  if (!user) return;
+  const u = Auth.get(); if (!u) return;
+  await GSheet.send('Auth', { id: u.id, name: document.getElementById('profileName').value, phone: document.getElementById('profilePhone').value, photo: u.photo }, 'UPDATE_PROFILE');
+  updateProfileName();
+  await logActivity('Updated profile', 'profile', 'Profile changes saved');
+  showToast('success','Saved','Profile updated');
+}
 
-  if (newPass) {
-    if (curPass !== user.password) { showToast('error','Wrong Password','Current password is incorrect'); return; }
-    user.password = newPass;
-    await GSheet.send('User_Save', { ...user, password: newPass });
+async function changePassword() {
+  const u = Auth.get(); if (!u) return;
+  const current = document.getElementById('currentPass').value;
+  const newP = document.getElementById('newPass').value;
+  if (!current || !newP) { showToast('error','Required','Fill both passwords'); return; }
+  if (newP.length < 6) { showToast('error','Weak','Min 6 characters'); return; }
+  await GSheet.send('Auth', { id: u.id, currentPassword: current, newPassword: newP }, 'CHANGE_PASSWORD');
+  await logActivity('Changed password', 'profile', 'Password updated');
+  showToast('success','Password Changed','Password updated successfully');
+  document.getElementById('currentPass').value=''; document.getElementById('newPass').value='';
+}
+
+function saveSettings() {
+  const url = document.getElementById('cfgWebApp')?.value?.trim();
+  if (url) CONFIG.WEB_APP_URL = url;
+  logActivity('Updated settings', 'settings', 'Configuration saved');
+  showToast('success','Saved','Settings saved');
+}
+
+window.addEventListener('load', () => {
+  handleHash();
+  const u = Auth.get();
+  if (u) {
+    document.getElementById('profileName').value = u.name;
+    document.getElementById('profileEmail').value = u.email;
+    document.getElementById('profileRole').value = u.role;
+    document.getElementById('profilePhone').value = u.phone || '';
+    document.getElementById('profileDisplayName').textContent = u.name;
   }
-
-  user.name = newName || user.name;
-  sessionStorage.setItem('phr_session', JSON.stringify(user));
-  loadProfileInSidebar();
-  updateProfileDisplay();
-  showToast('success','Saved!','Profile updated');
-}
-
-function getRoleLabel(role) {
-  return { SUPER_ADMIN:'Super Admin', DIRECTOR:'Director', HR_EXEC:'HR Executive', STORE_MGR:'Store Manager' }[role] || role;
-}
+  syncAll();
+  setInterval(syncAll, 5 * 60 * 1000); // auto-refresh every 5 minutes
+});
 </script>
 </body>
 </html>
